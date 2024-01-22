@@ -38,14 +38,14 @@ export default function ShopProductCard({ product, onProductClick }) {
           Email: {`${email.substring(0, 12)}...`}
         </Typography>
 
-        {commission === 0 ? <Typography variant="subtitle1" noWrap>
+        {/* {commission === 0 ? <Typography variant="subtitle1" noWrap>
           Total Commission: $0
         </Typography> : <Typography variant="subtitle1" noWrap>
           Total Commission: {fCurrency(commission)}
-        </Typography>}
+        </Typography>} */}
 
         {profit === 0 ? <Typography variant="subtitle1" noWrap>
-          Total Profit: $0
+          Total Profit: 0 USD
         </Typography> : <Typography variant="subtitle1" noWrap>
           Total Profit: {fCurrencyUSD(profit/100)}
         </Typography>}
