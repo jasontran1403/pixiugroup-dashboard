@@ -21,7 +21,6 @@ import {
   AppNewsUpdate2,
   AppWidgetSummary,
   AppWidgetSummaryUSD,
-  AppTasks
 } from '../sections/@dashboard/app';
 
 // ----------------------------------------------------------------------
@@ -97,10 +96,11 @@ export default function DashboardAppPage() {
   const [min, setMin] = useState(0.0);
   const [max, setMax] = useState(0.0);
   const [open, setOpen] = useState(null);
-  const [open2, setOpen2] = useState(null);
+  const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(null);
   const [listTable] = useState([{ table: "Profits" }, { table: "Commissions" }])
   const [currentTable, setCurrentTable] = useState(listTable[0].table);
+  const [listExnessFiltered, setListExnessFiltered ] = useState([])
 
   useEffect(() => {
     if (isAdmin && currentEmail !== "root@gmail.com") {
@@ -594,6 +594,15 @@ export default function DashboardAppPage() {
     },
   });
 
+
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (keyword) => {
+    const result = listExness.filter((item) => item.includes(keyword));
+    setListExnessFiltered(result);
+    setOpen2(!!keyword);
+  }
+
   return (
     <>
       <Helmet>
@@ -606,33 +615,30 @@ export default function DashboardAppPage() {
           Dashboard
         </Typography>
         <Grid item xs={12} sm={12} md={12} >
-          <Button variant="text" class="button-30" onClick={handleOpen2}>{currentExness}</Button>
-          <Popover
-            open={Boolean(open2)}
-            anchorEl={open2}
-            onClose={handleClose2}
-            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-            PaperProps={{
-              sx: {
-                p: 1,
-                width: 240,
-                marginTop: "40px",
-                '& .MuiMenuItem-root': {
-                  px: 1,
-                  typography: 'body2',
-                  borderRadius: 0.75,
-                },
-              },
+          <input type="text"  onChange={(e) => handleSearch(e.target.value)} placeholder={"Nhap Exness can tim"}  className="button-30 search-input" /> 
+          <input disabled value={currentExness} type="text" className="button-30 search-input" /> 
+          
+          <div
+            id ='exness-searchbar' 
+            open = {open2}
+            style={{
+              display: open2 ? 'block' : 'none',
+              position: "absolute",
+              minWidth: "240px",
+              zIndex: 2,
+              backgroundColor: "white",
+              border: "1px solid #ccc",
+              boxShadow: "2px 2px 2px #ccc",
             }}
+
           >
-            {listExness.map((item, index) => {
+            {listExnessFiltered?.map((item, index) => {
               return <MenuItem key={index} onClick={() => { handleChangeExness(item) }}>
                 <Iconify sx={{ mr: 2 }} />
                 {item}
               </MenuItem>
             })}
-          </Popover>
+          </div>
         </Grid>
         <Grid container spacing={3}>
           {isAdmin ? (
