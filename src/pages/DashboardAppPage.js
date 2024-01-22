@@ -7,13 +7,17 @@ import Swal from 'sweetalert2';
 import { alpha, useTheme } from '@mui/material/styles';
 // @mui
 import { Grid, Container, Typography, MenuItem, Popover, Card, CardHeader, Box, TextField, Button } from '@mui/material';
+
 // components
 import ReactApexChart from 'react-apexcharts';
+import { DateRangeComponents } from '../components/datepicker';
 import { fCurrency, fNumber, fShortenNumber } from '../utils/formatNumber';
 import Iconify from '../components/iconify';
 // components
 import { useChart } from '../components/chart';
 import { prod, dev } from "../utils/env";
+
+
 
 // sections
 import {
@@ -101,6 +105,7 @@ export default function DashboardAppPage() {
   const [listTable] = useState([{ table: "Profits" }, { table: "Commissions" }])
   const [currentTable, setCurrentTable] = useState(listTable[0].table);
   const [listExnessFiltered, setListExnessFiltered ] = useState([])
+  const [isRender, setIsRender] = useState(false)
 
   useEffect(() => {
     if (isAdmin && currentEmail !== "root@gmail.com") {
@@ -595,7 +600,10 @@ export default function DashboardAppPage() {
   });
 
 
-  const [search, setSearch] = useState("");
+
+  const handleDatePicker = (item) => {
+    console.log(item[0]);
+  }
 
   const handleSearch = (keyword) => {
     const result = listExness.filter((item) => item.includes(keyword));
@@ -645,7 +653,16 @@ export default function DashboardAppPage() {
             <>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
-                  <Button variant="text" class="button-30" onClick={handleOpen3}>{currentTable}</Button>
+                    <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
+                    <Button className="button-30" onClick={() => {
+                      setIsRender(!isRender)
+                    }}>
+                      Click
+                      </Button>
+                      <div>
+                        {isRender && <DateRangeComponents handleDatePicker={handleDatePicker} /> }  
+                      </div>
+
                   <Popover
                     open={Boolean(open3)}
                     anchorEl={open3}
@@ -694,7 +711,7 @@ export default function DashboardAppPage() {
             </>) : isManager ? (<>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
-                  <Button variant="text" class="button-30" onClick={handleOpen3}>{currentTable}</Button>
+                  <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
                   <Popover
                     open={Boolean(open3)}
                     anchorEl={open3}
@@ -744,7 +761,7 @@ export default function DashboardAppPage() {
             <>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
-                  <Button variant="text" class="button-30" id="button-30">{currentTable}</Button>
+                  <Button variant="text" className="button-30" id="button-30">{currentTable}</Button>
 
                   <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                     <ReactApexChart id="chart" type="line" series={chartData} options={chartOptions} height={364} />
