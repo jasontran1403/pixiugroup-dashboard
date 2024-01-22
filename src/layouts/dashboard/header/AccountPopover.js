@@ -12,15 +12,15 @@ import ModalChangePassword from '../../../components/changePassword';
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
-    icon: 'eva:home-fill',
+    label: 'Profile',
+    icon: 'eva:settings-2-fill',
   },
   {
     label: 'Change Password',
     icon: 'eva:person-fill',
   },
   {
-    label: 'Settings',
+    label: '2FA',
     icon: 'eva:settings-2-fill',
   },
 ];
@@ -46,8 +46,20 @@ export default function AccountPopover() {
     setOpen(false);
     if (e === "Change Password") {
       setIsModalOpen(true);
+    } else if (e === "Profile") {
+      window.location.href = "/profile";
+    } else if (e === "2FA") {
+      window.location.href = "/2fa";
     }
   };
+
+  const handleProfile = () => {
+    window.location.href = "/profile";
+  }
+
+  const handle2FA = () => {
+    window.location.href = "/2fa";
+  }
 
   const handleLogout = () => {
     const data = JSON.stringify({

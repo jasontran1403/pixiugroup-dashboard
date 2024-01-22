@@ -23,6 +23,7 @@ const StyledIcon = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 AppWidgetSummaryUSD.propTypes = {
+  classColor: PropTypes.string,
   color: PropTypes.string,
   icon: PropTypes.string,
   title: PropTypes.string.isRequired,
@@ -30,11 +31,11 @@ AppWidgetSummaryUSD.propTypes = {
   sx: PropTypes.object,
 };
 
-export default function AppWidgetSummaryUSD({ title, total, icon, color = 'primary', sx, ...other }) {
+export default function AppWidgetSummaryUSD({ classColor, title, total, icon, color = 'primary', sx, ...other }) {
   return (
     <div className='card__wrapper'>
     <div className='card__header'>
-      <div className='commission-background card__header-wrapper'>
+      <div className={`${classColor} card__header-wrapper`}>
       <Iconify className='card__header-icon' icon={icon} width={24} height={24} />
         <button className='card__header-btn'>+</button>
       </div>

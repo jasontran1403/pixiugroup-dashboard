@@ -120,7 +120,7 @@ function TransactionItem() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
   const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
-  console.log("a");
+
   useEffect(() => {
     const config = {
       method: 'get',

@@ -23,16 +23,16 @@ if (adminNav) {
     path: '/network',
     icon: icon('ic_network'),
   });
-  navConfig.push({
-    title: 'Profile',
-    path: '/profile',
-    icon: icon('ic_user'),
-  });
-  navConfig.push({
-    title: '2FA',
-    path: '/2fa',
-    icon: icon('ic_lock'),
-  });
+  // navConfig.push({
+  //   title: 'Profile',
+  //   path: '/profile',
+  //   icon: icon('ic_user'),
+  // });
+  // navConfig.push({
+  //   title: '2FA',
+  //   path: '/2fa',
+  //   icon: icon('ic_lock'),
+  // });
   navConfig.push({
     title: 'transaction',
     path: '/transaction',
@@ -43,11 +43,11 @@ if (adminNav) {
     path: '/commission',
     icon: icon('ic_transaction'),
   });
-  navConfig.push({
-    title: 'upload',
-    path: '/upload',
-    icon: icon('ic_disabled'),
-  });
+  // navConfig.push({
+  //   title: 'upload',
+  //   path: '/upload',
+  //   icon: icon('ic_disabled'),
+  // });
 }
 else if (managerNav) {
   navConfig.push({
@@ -60,16 +60,16 @@ else if (managerNav) {
     path: '/network',
     icon: icon('ic_network'),
   });
-  navConfig.push({
-    title: 'Profile',
-    path: '/profile',
-    icon: icon('ic_user'),
-  });
-  navConfig.push({
-    title: '2FA',
-    path: '/2fa',
-    icon: icon('ic_lock'),
-  });
+  // navConfig.push({
+  //   title: 'Profile',
+  //   path: '/profile',
+  //   icon: icon('ic_user'),
+  // });
+  // navConfig.push({
+  //   title: '2FA',
+  //   path: '/2fa',
+  //   icon: icon('ic_lock'),
+  // });
   navConfig.push({
     title: 'transaction',
     path: '/transaction',
@@ -80,11 +80,11 @@ else if (managerNav) {
     path: '/commission',
     icon: icon('ic_transaction'),
   });
-  navConfig.push({
-    title: 'upload',
-    path: '/upload',
-    icon: icon('ic_disabled'),
-  });
+  // navConfig.push({
+  //   title: 'upload',
+  //   path: '/upload',
+  //   icon: icon('ic_disabled'),
+  // });
 } else {
   navConfig.push({
     title: 'dashboard',
@@ -96,26 +96,26 @@ else if (managerNav) {
     path: '/network',
     icon: icon('ic_network'),
   });
-  navConfig.push({
-    title: 'Profile',
-    path: '/profile',
-    icon: icon('ic_user'),
-  });
-  navConfig.push({
-    title: '2FA',
-    path: '/2fa',
-    icon: icon('ic_lock'),
-  });
+  // navConfig.push({
+  //   title: 'Profile',
+  //   path: '/profile',
+  //   icon: icon('ic_user'),
+  // });
+  // navConfig.push({
+  //   title: '2FA',
+  //   path: '/2fa',
+  //   icon: icon('ic_lock'),
+  // });
   navConfig.push({
     title: 'transaction',
     path: '/transaction',
     icon: icon('ic_transaction'),
   });
-  navConfig.push({
-    title: 'upload',
-    path: '/upload',
-    icon: icon('ic_disabled'),
-  });
+  // navConfig.push({
+  //   title: 'upload',
+  //   path: '/upload',
+  //   icon: icon('ic_disabled'),
+  // });
 }
 
 export default navConfig;

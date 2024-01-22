@@ -678,8 +678,8 @@ export default function DashboardAppPage() {
               </Grid>
 
               <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummaryUSD className="balance-section" sx={{ mb: 2 }} title="Total Commissions" total={commission} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Total Commissions" total={commission} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD classColor={"commission-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
@@ -727,8 +727,8 @@ export default function DashboardAppPage() {
               </Grid>
 
               <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummaryUSD className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD classColor={"commission-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
@@ -747,8 +747,8 @@ export default function DashboardAppPage() {
               </Grid>
 
               <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummaryUSD className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD classColor={"commission-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />

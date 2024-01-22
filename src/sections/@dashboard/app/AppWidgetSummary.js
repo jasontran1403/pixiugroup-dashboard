@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
 // utils
-import { fCurrency, fShortenNumber } from '../../../utils/formatNumber';
+import { fCurrency, fShortenNumber, fCurrencyUSD } from '../../../utils/formatNumber';
 // components
 import Iconify from '../../../components/iconify';
 
@@ -41,7 +41,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
       </div>
 
       <div className='card__body'>
-        <h3>{fCurrency(total)}</h3>
+        <h3>{fCurrencyUSD(total)}</h3>
       </div>
 
       <div className='card__footer'>
