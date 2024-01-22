@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // utils
-import { fCurrency } from '../../../utils/formatNumber';
+import { fCurrency, fCurrencyUSD } from '../../../utils/formatNumber';
 // components
 import Label from '../../../components/label';
 import { ColorPreview } from '../../../components/color-utils';
@@ -47,7 +47,7 @@ export default function ShopProductCard({ product, onProductClick }) {
         {profit === 0 ? <Typography variant="subtitle1" noWrap>
           Total Profit: $0
         </Typography> : <Typography variant="subtitle1" noWrap>
-          Total Profit: {fCurrency(profit)}
+          Total Profit: {fCurrencyUSD(profit/100)}
         </Typography>}
       </Stack>
     </Card>
