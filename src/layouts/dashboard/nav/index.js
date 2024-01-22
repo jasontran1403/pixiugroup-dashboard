@@ -96,7 +96,7 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
         <StyledAccount className = "nav-img-container">
-              <img className='nav-header-img' src="/assets/logo.png" alt="logo-img" />
+              {/* <img className='nav-header-img' src="/assets/logo.png" alt="logo-img" /> */}
             
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>

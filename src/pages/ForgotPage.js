@@ -48,12 +48,14 @@ export default function ForgotPage() {
       <Helmet>
         <title> Forgot Pass </title>
         <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
-        
+
 
       </Helmet>
 
       <StyledRoot>
-        <a href= {"/login"}> <img className='logo-img' src="/assets/logo.png" alt="logo-img" /> </a>
+        {/* <a href={"/login"}>
+          <img className='logo-img' src="/assets/logo.png" alt="logo-img" />
+        </a> */}
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
@@ -86,7 +88,7 @@ export default function ForgotPage() {
             </Divider> */}
 
             <ForgotForm />
-            
+
           </StyledContent>
         </Container>
       </StyledRoot>
