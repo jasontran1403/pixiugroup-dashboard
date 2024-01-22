@@ -17,14 +17,13 @@ export default function LoginForm2() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [refferal, setRefferal] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = () => {
-    if (email === "" || password === "" || firstName === "" || lastName === "" || refferal === "" || code === "") {
+    if (email === "" || password === "" || firstName === "" || lastName === "" || refferal === "") {
       Swal.fire({
         title: "Vui lòng nhập thông tin bắt buộc để đăng ký!",
         icon: "error",
@@ -51,7 +50,7 @@ export default function LoginForm2() {
       "email": email,
       "password": password,
       "refferal": refferal,
-      "code": code
+      "branchName": "PixiuGroup"
     });
 
     const config = {
@@ -139,8 +138,6 @@ export default function LoginForm2() {
             ),
           }}
         />
-        
-        <TextField name="code" type="text" label="Your refferal code" onChange={(e) => { setCode(e.target.value) }} />
 
         <TextField name="refferal" type="text" label="Refferal" onChange={(e) => { setRefferal(e.target.value) }} />
 

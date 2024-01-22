@@ -26,7 +26,7 @@ ShopProductCard.propTypes = {
 
 export default function ShopProductCard({ product, onProductClick }) {
   const { email, profit, commission, refferal, price, image } = product;
-  console.log(image);
+  
   return (
     <Card style={{ cursor: "pointer" }} onClick={() => onProductClick(email, refferal)} >
       <Box sx={{ pt: '100%', position: 'relative' }}>
