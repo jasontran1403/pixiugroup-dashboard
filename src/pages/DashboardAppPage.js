@@ -738,7 +738,7 @@ export default function DashboardAppPage() {
             <>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
-                  <Button variant="text" class="button-30">{currentTable}</Button>
+                  <Button variant="text" class="button-30" id="button-30">{currentTable}</Button>
 
                   <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                     <ReactApexChart id="chart" type="line" series={chartData} options={chartOptions} height={364} />

@@ -455,3 +455,77 @@ html {
   box-shadow: #D6D6E7 0 3px 7px inset;
   transform: translateY(2px);
 }
+
+.card__wrapper {
+  background-color: #fff;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 5px 5px 10px #ccc;
+}
+
+.card__header {
+  margin: 0 8px;
+  padding-top: 8px;
+}
+
+.card__header-wrapper {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fe80a6;
+  padding-top: -5px;
+  border-radius: 10px;
+  color: white;
+}
+
+
+.card__header-icon {
+  margin-left: 8px;
+}
+
+.card__header-btn {
+  margin-right: 14px;
+}
+
+.card__header-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: white;
+}
+
+.card__body {
+  margin: 0 10px;
+  margin: 8px 18px 26px 18px;
+}
+
+.card__footer {
+  margin: 0 18px;
+  padding-bottom: 16px;
+
+}
+
+.deposit-background {
+  background-color: #f5f5ff;
+}
+
+.deposit-icon {
+  color: black;
+}
+
+.withdraw-background {
+  background-color: #b4ff00;
+}
+
+.withdraw-icon {
+  color: black;
+}
+
+.commission-background {
+  background-color: #1edeff;
+}
+
+.totalCommission-background {
+  background-color: #c787f7
+};
