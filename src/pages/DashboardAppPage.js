@@ -637,7 +637,7 @@ export default function DashboardAppPage() {
         <Grid container spacing={3}>
           {isAdmin ? (
             <>
-              <Grid item xs={12} md={12} lg={8} >
+              <Grid item xs={12} md={12} lg={6} >
                 <Card>
                   <Button variant="text" class="button-30" onClick={handleOpen3}>{currentTable}</Button>
                   <Popover
@@ -677,11 +677,11 @@ export default function DashboardAppPage() {
                 </Card>
               </Grid>
 
-              <Grid item xs={12} sm={3} md={2}>
+              <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummaryUSD className="balance-section" sx={{ mb: 2 }} title="Total Commissions" total={commission} color="info" icon={'mi:layers'} />
                 <AppWidgetSummaryUSD className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
               </Grid>
-              <Grid item xs={12} sm={3} md={2}>
+              <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
                 <AppWidgetSummary className="withdraw-section" sx={{ mb: 2 }} title="Total Withdraws" total={prevWithdraw} icon={'iconoir:coins-swap'} />
               </Grid>
@@ -726,11 +726,11 @@ export default function DashboardAppPage() {
                 </Card>
               </Grid>
 
-              <Grid item xs={12} sm={3} md={3}>
+              <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummaryUSD className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
                 <AppWidgetSummaryUSD className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
               </Grid>
-              <Grid item xs={12} sm={3} md={3}>
+              <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
                 <AppWidgetSummary className="withdraw-section" sx={{ mb: 2 }} title="Total Withdraws" total={prevWithdraw} icon={'iconoir:coins-swap'} />
               </Grid>
