@@ -15,8 +15,8 @@ export default function DateRangeComponents({ handleDatePicker }) {
 
   return (
     <DateRange
-      editableDateInputs
-      onChange={(item) => handleDatePicker([item.selection])}
+      editableDateInputs 
+      onChange={(item) =>handleDatePicker([item.selection]) || setState([item.selection])  }
       moveRangeOnFirstSelection={false}
       ranges={state}
     />

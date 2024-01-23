@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 import Swal from 'sweetalert2';
 import { alpha, useTheme } from '@mui/material/styles';
+import { DateRange } from "react-date-range";
+
 // @mui
 import { Grid, Container, Typography, MenuItem, Popover, Card, CardHeader, Box, TextField, Button } from '@mui/material';
 
@@ -599,17 +601,39 @@ export default function DashboardAppPage() {
     },
   });
 
-
+  const [startDay,setStartDay] = useState('')
+  const [endDay, setEndDay] = useState('')
 
   const handleDatePicker = (item) => {
-    console.log(item[0]);
-  }
+    // console.log(item[0].startDate)
+    const formattedStartDate = new Date(item[0].startDate).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+    setStartDay(formattedStartDate);
+
+    const formattedEndDate = new Date(item[0].endDate).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+    setEndDay(formattedEndDate)
+  };
+
+  
+
+
 
   const handleSearch = (keyword) => {
     const result = listExness.filter((item) => item.includes(keyword));
     setListExnessFiltered(result);
     setOpen2(!!keyword);
   }
+
+
 
   return (
     <>
@@ -622,9 +646,11 @@ export default function DashboardAppPage() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Dashboard
         </Typography>
-        <Grid item xs={12} sm={12} md={12} >
-          <input type="text"  onChange={(e) => handleSearch(e.target.value)} placeholder={"Nhap Exness can tim"}  className="button-30 search-input" /> 
-          <input disabled value={currentExness} type="text" className="button-30 search-input" /> 
+        <Grid style={{marginBottom: "16px"}} item xs={12} sm={12} md={12} >
+          <input type="text"  onChange={(e) => handleSearch(e.target.value)} placeholder={"Nhap Exness can tim"}  className="button-30" /> 
+          <span className='search-section'>
+            <input disabled value={currentExness} type="text" className="search-input" /> 
+          </span>
           
           <div
             id ='exness-searchbar' 
@@ -653,14 +679,22 @@ export default function DashboardAppPage() {
             <>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
-                    <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
-                    <Button className="button-30" onClick={() => {
-                      setIsRender(!isRender)
-                    }}>
-                      Click
+                    <div className='day-section'>
+                      <input style={{padding:"4px", fontWeight: "500",textAlign: "center"}} disabled value={startDay} />
+                      <span> - </span>
+                      <input style={{padding:"4px", fontWeight: "500",textAlign: "center"}} disabled value={endDay} />  
+                    </div>
+
+                    <div className='btn-wrap'>
+                      <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
+                      <Button style={{marginLeft: "12px"}} className="button-30" onClick={() => {
+                        setIsRender(!isRender)
+                      }}>
+                        Select Day
                       </Button>
-                      <div>
-                        {isRender && <DateRangeComponents handleDatePicker={handleDatePicker} /> }  
+                    </div>
+                      <div className = 'calendar-wrapper' style={{position:'absolute', zIndex: '50'}}>
+                        {isRender &&<DateRangeComponents handleDatePicker={handleDatePicker} /> }
                       </div>
 
                   <Popover
@@ -702,7 +736,7 @@ export default function DashboardAppPage() {
 
               <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Total Commissions" total={commission} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD classColor={"commission-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD classColor={"deposit-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
