@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 import Swal from 'sweetalert2';
 import { alpha, useTheme } from '@mui/material/styles';
-import { DateRange } from "react-date-range";
+import { format } from "date-fns";
 
 // @mui
 import { Grid, Container, Typography, MenuItem, Popover, Card, CardHeader, Box, TextField, Button } from '@mui/material';
@@ -71,6 +71,20 @@ const convertToDate = (timeunix) => {
   // Tạo chuỗi định dạng "dd/MM"
   return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}`;
 };
+
+const convertToDateTime = (timeunix) => {
+  // Tạo một đối tượng Date từ Unix timestamp
+  const date = new Date(timeunix * 1000); // *1000 để chuyển đổi từ giây sang mili giây
+
+  // Lấy ngày, tháng và năm từ đối tượng Date
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0, nên cần +1
+  const year = date.getFullYear(); // Tháng trong JavaScript bắt đầu từ 0, nên cần +1
+
+  // Tạo chuỗi định dạng "dd/MM"
+  return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year.toString().padStart(2, '0')}`;
+};
+
 export default function DashboardAppPage() {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -106,8 +120,9 @@ export default function DashboardAppPage() {
   const [open3, setOpen3] = useState(null);
   const [listTable] = useState([{ table: "Profits" }, { table: "Commissions" }])
   const [currentTable, setCurrentTable] = useState(listTable[0].table);
-  const [listExnessFiltered, setListExnessFiltered ] = useState([])
-  const [isRender, setIsRender] = useState(false)
+  const [listExnessFiltered, setListExnessFiltered] = useState([])
+  const [isRender, setIsRender] = useState(false);
+  const [clearSearchInput, setClearSearchInput] = useState(false);
 
   useEffect(() => {
     if (isAdmin && currentEmail !== "root@gmail.com") {
@@ -177,16 +192,15 @@ export default function DashboardAppPage() {
   }
 
   const handleChangeExness = (exness) => {
-    if (exness === "Chọn Exness ID") {
-      // setCurrentExness(exness);
-      // fetchData(currentEmail, currentMonth);
-      // fetchPrev(currentEmail);
-    } else {
-      setCurrentExness(exness);
-      fetchData(exness, currentMonth);
-      fetchPrev(exness);
-    }
+    const currentDate = new Date();
+    currentDate.setUTCHours(0, 0, 1);
 
+    // Lấy giá trị Unix timestamp
+    const unixTimeStamp = Math.floor(currentDate.getTime() / 1000);
+    setCurrentExness(exness);
+    fetchData(exness, unixTimeStamp - (86400 * 7), unixTimeStamp);
+    fetchPrev(exness);
+    setClearSearchInput(false);
     handleClose2();
   }
 
@@ -349,31 +363,32 @@ export default function DashboardAppPage() {
     return arr.reduce((min, current) => (current.amount < min.amount ? current : min), arr[0]);
   }
 
-  const fetchData = (exness, time) => {
-    const [month, year] = time.split('/');
+  const fetchData = (exness, timeFrom, timeTo) => {
+    // const [month, year] = time.split('/');
 
-    // Tạo ngày đầu tiên của tháng và tháng sau
-    const startDate = new Date(`${year}-${month}-01T00:00:00Z`);
-    let nextMonth = parseInt(month, 10) + 1;
+    // console.log(time);
+    // // Tạo ngày đầu tiên của tháng và tháng sau
+    // const startDate = new Date(`${year}-${month}-01T00:00:00Z`);
+    // let nextMonth = parseInt(month, 10) + 1;
 
-    if (nextMonth > 12) {
-      nextMonth = 1;
-    }
+    // if (nextMonth > 12) {
+    //   nextMonth = 1;
+    // }
 
-    const nextYear = nextMonth > 12 ? parseInt(year, 10) + 1 : year;
+    // const nextYear = nextMonth > 12 ? parseInt(year, 10) + 1 : year;
 
-    const endDate = new Date(`${nextYear}-${String(nextMonth).padStart(2, '0')}-01T00:00:00Z`);
+    // const endDate = new Date(`${nextYear}-${String(nextMonth).padStart(2, '0')}-01T00:00:00Z`);
 
-    // Chuyển đổi thành timestamps Unix
-    const startUnix = startDate.getTime() / 1000;
-    const endUnix = endDate.getTime() / 1000;
+    // // Chuyển đổi thành timestamps Unix
+    // const startUnix = startDate.getTime() / 1000;
+    // const endUnix = endDate.getTime() / 1000;
 
-    const encodedFrom = encodeURIComponent(startUnix);
-    const encodedTo = encodeURIComponent(endUnix);
+    const encodedFrom = encodeURIComponent(timeFrom);
+    const encodedTo = encodeURIComponent(timeTo);
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${prod}/api/v1/secured/get-info-by-exness/exness=${exness}&from=${encodedFrom}&to=${encodedTo}`,
+      url: `${prod}/api/v1/secured/get-info-by-exness-time-range/exness=${exness}&from=${encodedFrom}&to=${encodedTo}`,
       headers: {
         'Authorization': `Bearer ${currentAccessToken}`
       }
@@ -601,39 +616,44 @@ export default function DashboardAppPage() {
     },
   });
 
-  const [startDay,setStartDay] = useState('')
+  const [startDay, setStartDay] = useState('')
   const [endDay, setEndDay] = useState('')
+  const [startDayUnix, setStartDayUnix] = useState(0)
+  const [endDayUnix, setEndDayUnix] = useState(0)
+
+  useEffect(() => {
+    const currentDate = new Date();
+    currentDate.setUTCHours(0, 0, 1);
+
+    // Lấy giá trị Unix timestamp
+    const unixTimeStamp = Math.floor(currentDate.getTime() / 1000);
+    setStartDayUnix(unixTimeStamp - (86400 * 7));
+    setEndDayUnix(unixTimeStamp);
+    setStartDay(convertToDateTime(unixTimeStamp - (86400 * 7)))
+    setEndDay(convertToDateTime(unixTimeStamp));
+  }, []);
 
   const handleDatePicker = (item) => {
-    // console.log(item[0].startDate)
-    const formattedStartDate = new Date(item[0].startDate).toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
+    const formattedStartDate = format(new Date(item[0].startDate), 'dd/MM/yyyy');
     setStartDay(formattedStartDate);
 
-    const formattedEndDate = new Date(item[0].endDate).toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-    setEndDay(formattedEndDate)
+    const formattedEndDate = format(new Date(item[0].endDate), 'dd/MM/yyyy');
+    setEndDay(formattedEndDate);
   };
 
-  
-
-
+  const handleDatePicked = (time) => {
+    console.log(currentExness);
+    if (currentExness !== "Chọn Exness ID") {
+      fetchData(currentExness, (time.startDate.getTime() / 1000), time.endDate.getTime() / 1000);
+    }
+    setIsRender(!true);
+  }
 
   const handleSearch = (keyword) => {
     const result = listExness.filter((item) => item.includes(keyword));
     setListExnessFiltered(result);
     setOpen2(!!keyword);
   }
-
-
 
   return (
     <>
@@ -646,15 +666,20 @@ export default function DashboardAppPage() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Dashboard
         </Typography>
-        <Grid style={{marginBottom: "16px"}} item xs={12} sm={12} md={12} >
-          <input type="text"  onChange={(e) => handleSearch(e.target.value)} placeholder={"Nhap Exness can tim"}  className="button-30" /> 
+        <Grid style={{ marginBottom: "16px" }} item xs={12} sm={12} md={12} >
+          <input
+            type="text"
+            onChange={(e) => handleSearch(e.target.value)}
+            placeholder={"Nhập Exness ID cần tìm"}
+            className="button-30"
+          />
           <span className='search-section'>
-            <input disabled value={currentExness} type="text" className="search-input" /> 
+            <input disabled value={currentExness} type="text" className="search-input" />
           </span>
-          
+
           <div
-            id ='exness-searchbar' 
-            open = {open2}
+            id='exness-searchbar'
+            open={open2}
             style={{
               display: open2 ? 'block' : 'none',
               position: "absolute",
@@ -664,7 +689,6 @@ export default function DashboardAppPage() {
               border: "1px solid #ccc",
               boxShadow: "2px 2px 2px #ccc",
             }}
-
           >
             {listExnessFiltered?.map((item, index) => {
               return <MenuItem key={index} onClick={() => { handleChangeExness(item) }}>
@@ -679,23 +703,23 @@ export default function DashboardAppPage() {
             <>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
-                    <div className='day-section'>
-                      <input style={{padding:"4px", fontWeight: "500",textAlign: "center"}} disabled value={startDay} />
-                      <span> - </span>
-                      <input style={{padding:"4px", fontWeight: "500",textAlign: "center"}} disabled value={endDay} />  
-                    </div>
+                  <div className='day-section'>
+                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={startDay} />
+                    <span> - </span>
+                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={endDay} />
+                  </div>
 
-                    <div className='btn-wrap'>
-                      <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
-                      <Button style={{marginLeft: "12px"}} className="button-30" onClick={() => {
-                        setIsRender(!isRender)
-                      }}>
-                        Select Day
-                      </Button>
-                    </div>
-                      <div className = 'calendar-wrapper' style={{position:'absolute', zIndex: '50'}}>
-                        {isRender &&<DateRangeComponents handleDatePicker={handleDatePicker} /> }
-                      </div>
+                  <div className='btn-wrap'>
+                    <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
+                    <Button style={{ marginLeft: "12px" }} className="button-30" onClick={() => {
+                      setIsRender(!isRender)
+                    }}>
+                      Chọn ngày
+                    </Button>
+                  </div>
+                  <div className='calendar-wrapper' style={{ position: 'absolute', zIndex: '50' }}>
+                    {isRender && <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />}
+                  </div>
 
                   <Popover
                     open={Boolean(open3)}
