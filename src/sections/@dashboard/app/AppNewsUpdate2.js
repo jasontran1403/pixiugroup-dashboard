@@ -268,7 +268,7 @@ function TransactionItem() {
                   return (
                     <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                       <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
                           <Typography variant="subtitle2" noWrap>
                             {id}
                           </Typography>
@@ -276,7 +276,7 @@ function TransactionItem() {
                       </TableCell>
 
                       <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
                           <Typography variant="subtitle2" noWrap>
                             {email}
                           </Typography>
@@ -284,7 +284,7 @@ function TransactionItem() {
                       </TableCell>
 
                       <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
                           <Typography variant="subtitle2" noWrap>
                             {name}
                           </Typography>
@@ -292,7 +292,7 @@ function TransactionItem() {
                       </TableCell>
 
                       <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
                           <Typography variant="subtitle2" noWrap>
                             {role}
                           </Typography>
@@ -300,7 +300,7 @@ function TransactionItem() {
                       </TableCell>
 
                       <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
                           <Label onClick={() => { openModalDetail(id) }} style={{ cursor: "pointer" }} color={("info")}>{"Cập nhật"}</Label>
                         </Stack>
                       </TableCell>

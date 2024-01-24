@@ -78,14 +78,24 @@ export default function TransactionPage() {
 
   const [listTransactions, setListTransactions] = useState([]);
 
+  const [isAdmin] = useState(localStorage.getItem("r") === "a");
+  const [isManager] = useState(localStorage.getItem("r") === "m");
+  const [isUser] = useState(localStorage.getItem("r") === "u");
+
   const [currentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
   const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
 
   useEffect(() => {
+    let urlConvert = "";
+    if (isAdmin) {
+      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${"all"}`
+    } else {
+      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${currentEmail}`
+    }
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${prod}/api/v1/secured/get-transaction/email=${currentEmail}`,
+      url: urlConvert,
       headers: {
         'Authorization': `Bearer ${currentAccessToken}`
       }

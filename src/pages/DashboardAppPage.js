@@ -192,6 +192,10 @@ export default function DashboardAppPage() {
   }
 
   const handleChangeExness = (exness) => {
+    if (exness === "Chọn Exness ID") {
+      handleClose2();
+      return;
+    }
     const currentDate = new Date();
     currentDate.setUTCHours(0, 0, 1);
 
@@ -666,38 +670,87 @@ export default function DashboardAppPage() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Dashboard
         </Typography>
-        <Grid style={{ marginBottom: "16px" }} item xs={12} sm={12} md={12} >
-          <input
-            type="text"
-            onChange={(e) => handleSearch(e.target.value)}
-            placeholder={"Nhập Exness ID cần tìm"}
-            className="button-30"
-          />
-          <span className='search-section'>
-            <input disabled value={currentExness} type="text" className="search-input" />
-          </span>
+        {isAdmin || isManager ?
+          <Grid style={{ marginBottom: "16px" }} item xs={12} sm={12} md={12} >
+            <input
+              type="text"
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder={"Nhập Exness ID cần tìm"}
+              className="button-30"
+            />
+            <span className='search-section'>
+              <input
+                type="text"
+                disabled value={currentExness}
+                className="button-30"
+              />
+            </span>
 
-          <div
-            id='exness-searchbar'
-            open={open2}
-            style={{
-              display: open2 ? 'block' : 'none',
-              position: "absolute",
-              minWidth: "240px",
-              zIndex: 2,
-              backgroundColor: "white",
-              border: "1px solid #ccc",
-              boxShadow: "2px 2px 2px #ccc",
-            }}
-          >
-            {listExnessFiltered?.map((item, index) => {
-              return <MenuItem key={index} onClick={() => { handleChangeExness(item) }}>
-                <Iconify sx={{ mr: 2 }} />
-                {item}
-              </MenuItem>
-            })}
-          </div>
-        </Grid>
+            <div
+              id='exness-searchbar'
+              open={open2}
+              style={{
+                display: open2 ? 'block' : 'none',
+                position: "absolute",
+                minWidth: "240px",
+                zIndex: 2,
+                backgroundColor: "white",
+                border: "1px solid #ccc",
+                boxShadow: "2px 2px 2px #ccc",
+              }}
+            >
+              {listExnessFiltered?.map((item, index) => {
+                return <MenuItem key={index} onClick={() => { handleChangeExness(item) }}>
+                  <Iconify sx={{ mr: 2 }} />
+                  {item}
+                </MenuItem>
+              })}
+            </div>
+          </Grid>
+          :
+          <Grid item xs={12} sm={12} md={12} >
+            <input
+              type="text"
+              onClick={handleOpen2}
+              placeholder={currentExness}
+              className="button-30"
+              readOnly
+            />
+            <span className='search-section'>
+              <input
+                type="text"
+                disabled value={currentExness}
+                className="button-30"
+              />
+            </span>
+            <Popover
+              open={Boolean(open2)}
+              anchorEl={open2}
+              onClose={handleClose2}
+              anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+              PaperProps={{
+                sx: {
+                  p: 1,
+                  width: 240,
+                  marginTop: "40px",
+                  '& .MuiMenuItem-root': {
+                    px: 1,
+                    typography: 'body2',
+                    borderRadius: 0.75,
+                  },
+                },
+              }}
+            >
+              {listExness.map((item, index) => {
+                return <MenuItem key={index} onClick={() => { handleChangeExness(item) }}>
+                  <Iconify sx={{ mr: 2 }} />
+                  {item}
+                </MenuItem>
+              })}
+            </Popover>
+          </Grid>
+        }
         <Grid container spacing={3}>
           {isAdmin ? (
             <>
@@ -769,7 +822,24 @@ export default function DashboardAppPage() {
             </>) : isManager ? (<>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
-                  <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
+                  <div className='day-section'>
+                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={startDay} />
+                    <span> - </span>
+                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={endDay} />
+                  </div>
+
+                  <div className='btn-wrap'>
+                    <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
+                    <Button style={{ marginLeft: "12px" }} className="button-30" onClick={() => {
+                      setIsRender(!isRender)
+                    }}>
+                      Chọn ngày
+                    </Button>
+                  </div>
+                  <div className='calendar-wrapper' style={{ position: 'absolute', zIndex: '50' }}>
+                    {isRender && <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />}
+                  </div>
+
                   <Popover
                     open={Boolean(open3)}
                     anchorEl={open3}
@@ -819,8 +889,23 @@ export default function DashboardAppPage() {
             <>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
-                  <Button variant="text" className="button-30" id="button-30">{currentTable}</Button>
+                  <div className='day-section'>
+                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={startDay} />
+                    <span> - </span>
+                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={endDay} />
+                  </div>
 
+                  <div className='btn-wrap'>
+                    <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
+                    <Button style={{ marginLeft: "12px" }} className="button-30" onClick={() => {
+                      setIsRender(!isRender)
+                    }}>
+                      Chọn ngày
+                    </Button>
+                  </div>
+                  <div className='calendar-wrapper' style={{ position: 'absolute', zIndex: '50' }}>
+                    {isRender && <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />}
+                  </div>
                   <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                     <ReactApexChart id="chart" type="line" series={chartData} options={chartOptions} height={364} />
                   </Box>
