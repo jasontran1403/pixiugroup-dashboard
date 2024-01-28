@@ -65,7 +65,7 @@ export default function LoginPage() {
           </StyledSection>
         )}
 
-        <Container className='login-section' maxWidth="sm">
+        <Container className='login-section' maxWidth="sm" style={{ color: "white" }}>
           <StyledContent>
             <Typography variant="h4" gutterBottom>
               Sign in to Pixiu - Group
@@ -73,7 +73,7 @@ export default function LoginPage() {
 
             <Typography variant="body2" sx={{ mb: 5 }}>
               Don’t have an account? {''}
-              <Link href={"/signup"} variant="subtitle2" style={{ cursor: "pointer" }}>Sign up</Link>
+              <Link href={"/signup"} variant="subtitle2" style={{ cursor: "pointer", color: "white" }}>Sign up</Link>
             </Typography>
 
             {/* <Stack direction="row" spacing={2}>

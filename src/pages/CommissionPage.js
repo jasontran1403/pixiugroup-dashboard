@@ -5,13 +5,15 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 // @mui
 import {
-  Card, Table, Stack, Paper, Avatar, Button, Popover, Checkbox, TableRow, MenuItem, TableBody, TableCell, Container, Typography, IconButton, TableContainer, TablePagination,
+  Box, Grid, TextField, Card, Table, Stack, Paper, Avatar, Button, Popover, Checkbox, TableRow, MenuItem, TableBody, TableCell, Container, Typography, IconButton, TableContainer, TablePagination,
 } from '@mui/material';
 import { format } from 'date-fns';
 // components
+import Swal from 'sweetalert2';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
+
 // sections
 import { prod } from "../utils/env";
 import { TransactionListHead, TransactionListToolbar } from '../sections/@dashboard/transactions';
@@ -19,10 +21,9 @@ import { TransactionListHead, TransactionListToolbar } from '../sections/@dashbo
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'time', label: 'Time', alignRight: false },
-  { id: 'amount', label: 'Amount', alignRight: false },
-  { id: 'sender', label: 'Sender', alignRight: false },
-  { id: 'message', label: 'Message', alignRight: false },
+  { id: 'time', label: 'Thời gian', alignRight: false },
+  { id: 'amount', label: 'Số tiền', alignRight: false },
+  { id: 'message', label: 'Ghi chú', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -52,13 +53,15 @@ function applySortFilter(array, comparator, query) {
   });
   if (query) {
     return filter(array, (_user) => _user.amount.toString().toLowerCase().indexOf(query.toString().toLowerCase()) !== -1 ||
-    _user.sender.toString().toLowerCase().indexOf(query.toString().toLowerCase()) !== -1);
+      _user.transactionId.toString().toLowerCase().indexOf(query.toString().toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function CommissionPage() {
   const [open, setOpen] = useState(null);
+
+  const [capital, setCapital] = useState(0.0);
 
   const [page, setPage] = useState(0);
 
@@ -72,6 +75,8 @@ export default function CommissionPage() {
 
   const [listTransactions, setListTransactions] = useState([]);
 
+  const [isAdmin] = useState(localStorage.getItem("r") === "a");
+
   const [currentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
   const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
 
@@ -79,7 +84,7 @@ export default function CommissionPage() {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${prod}/api/v1/secured/getHistoryLisa/${currentEmail}`,
+      url: `${prod}/api/v1/secured/get-all-commission-pixiu`,
       headers: {
         'Authorization': `Bearer ${currentAccessToken}`
       }
@@ -120,6 +125,56 @@ export default function CommissionPage() {
     setFilterName(event.target.value);
   };
 
+  const handleSubmit = () => {
+    if (capital <= 0.0) {
+      return;
+    }
+
+    const config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${prod}/api/v1/auth/pixiu-group/capital=${parseFloat(capital)}`,
+    };
+
+    axios.request(config)
+      .then((response) => {
+        if (response.data === "ok") {
+          Swal.fire({
+            title: "Thao tác chia IB thành công",
+            icon: "success",
+            timer: 3000,
+            position: 'center',
+            showConfirmButton: false
+          }).then(() => {
+            window.location.reload();
+          });
+        }
+      });
+  }
+
+  const handleDelete = () => {
+    const config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${prod}/api/v1/auth/pixiu-group/delete`,
+    };
+
+    axios.request(config)
+      .then((response) => {
+        if (response.data === "ok") {
+          Swal.fire({
+            title: "Xoá dữ liệu IB thành công!",
+            icon: "success",
+            timer: 3000,
+            position: 'center',
+            showConfirmButton: false
+          }).then(() => {
+            window.location.reload();
+          });
+        }
+      });
+  }
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - listTransactions.length) : 0;
 
   const filteredUsers = applySortFilter(listTransactions, getComparator(order, orderBy), filterName);
@@ -131,14 +186,34 @@ export default function CommissionPage() {
       <Helmet>
         <title> Commission </title>
         <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
-        
-
       </Helmet>
+
+      <Container item style={{ marginBottom: "20px" }}>
+        <Card>
+          {isAdmin ? <Box>
+            <Typography variant="h4" gutterBottom>
+              Chia IB (chức năng test dành cho ADMIN)
+            </Typography>
+            <Grid item xs={12} sm={12} md={12} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <TextField onChange={(e) => { setCapital(e.target.value) }}
+                name="capital"
+                value={capital}
+                label="Doanh số"
+                type="number"
+                required
+              />
+              <Card style={{ textAlign: "center" }}>
+                <Button onClick={handleSubmit}>Tiến hành chia IB</Button>
+                <Button onClick={handleDelete}>Xoá dữ liệu chia IB</Button>
+              </Card>
+            </Grid>
+          </Box> : <></>}
+        </Card>
+      </Container>
 
       <Container>
         <Card>
           <TransactionListToolbar filterName={filterName} onFilterName={handleFilterByName} />
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -151,17 +226,15 @@ export default function CommissionPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                    const { id, time, amount, sender, message } = row;
+                    const { transactionId, time, amount, sender, message } = row;
 
                     return (
                       <TableRow hover key={index} tabIndex={-1}>
                         <TableCell align="left">{handleConvertTime(time)}</TableCell>
 
-                        <TableCell align="left">{`$${amount.toString().substring(0,4)}`}</TableCell>
+                        <TableCell align="left">{`$${amount.toString().substring(0, 4)}`}</TableCell>
 
-                        <TableCell align="left">{sender}</TableCell>
-
-                        <TableCell align="left">{message}</TableCell>
+                        <TableCell align="left">{transactionId}</TableCell>
                       </TableRow>
                     );
                   })}
