@@ -40,7 +40,6 @@ import { prod, dev } from "../../../utils/env";
 // mock
 
 const TABLE_HEAD = [
-  { id: 'id', label: '#ID', alignRight: false },
   { id: 'email', label: 'Địa chỉ email', alignRight: false },
   { id: 'fullname', label: 'Họ và tên', alignRight: false },
   { id: 'vai trò', label: 'Vai trò', alignRight: false },
@@ -267,14 +266,6 @@ function TransactionItem() {
 
                   return (
                     <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                      <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
-                          <Typography variant="subtitle2" noWrap>
-                            {id}
-                          </Typography>
-                        </Stack>
-                      </TableCell>
-
                       <TableCell component="th" scope="row" padding="none">
                         <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
                           <Typography variant="subtitle2" noWrap>
