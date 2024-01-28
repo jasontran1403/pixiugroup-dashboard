@@ -40,7 +40,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
     const [refferal, setRefferal] = useState("");
     const [role, setRole] = useState("");
     const [open2, setOpen2] = useState(null);
-    const [listExness, setListExness] = useState([{role: "USER"}, {role: "MANAGER"}, {role: "ADMIN"}]);
+    const [listExness, setListExness] = useState([{ role: "USER" }, { role: "MANAGER" }]);
 
     const handleOpen2 = (event) => {
         setOpen2(event.currentTarget);
@@ -53,7 +53,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
     const handleChangeExness = (exness) => {
         setRole(exness);
         handleClose2();
-      }
+    }
 
     useEffect(() => {
         const config = {
