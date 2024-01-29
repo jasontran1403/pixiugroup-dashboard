@@ -189,98 +189,109 @@ export default function CommissionPage() {
         <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
       </Helmet>
 
-      <Container item style={{ marginBottom: "20px" }}>
-        <Card>
-          {isAdmin ? <Box>
-            <Typography variant="h4" gutterBottom>
-              Chia IB (chức năng test dành cho ADMIN)
-            </Typography>
-            <Grid item xs={12} sm={12} md={12} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <TextField onChange={(e) => { setCapital(e.target.value) }}
-                name="capital"
-                value={capital}
-                label="Doanh số"
-                type="number"
-                required
-              />
-              <Card style={{ textAlign: "center" }}>
-                <Button onClick={handleSubmit}>Tiến hành chia IB</Button>
-                <Button onClick={handleDelete}>Xoá dữ liệu chia IB</Button>
-              </Card>
-            </Grid>
-          </Box> : <></>}
-        </Card>
-      </Container>
-
-      <Container>
-        <Card>
-          <TransactionListToolbar filterName={filterName} onFilterName={handleFilterByName} />
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <TransactionListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={listTransactions.length}
-                  onRequestSort={handleRequestSort}
+      {isAdmin ? <>
+        <Container item style={{ marginBottom: "20px" }}>
+          <Card>
+            {isAdmin ? <Box>
+              <Typography variant="h4" gutterBottom>
+                Chia IB (chức năng test dành cho ADMIN)
+              </Typography>
+              <Grid item xs={12} sm={12} md={12} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <TextField onChange={(e) => { setCapital(e.target.value) }}
+                  name="capital"
+                  value={capital}
+                  label="Doanh số"
+                  type="number"
+                  required
                 />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                    const { transactionId, time, amount, sender, message, exnessId } = row;
+                <Card style={{ textAlign: "center" }}>
+                  <Button onClick={handleSubmit}>Tiến hành chia IB</Button>
+                  <Button onClick={handleDelete}>Xoá dữ liệu chia IB</Button>
+                </Card>
+              </Grid>
+            </Box> : <></>}
+          </Card>
+        </Container>
 
-                    return (
-                      <TableRow hover key={index} tabIndex={-1}>
-                        <TableCell align="left">{handleConvertTime(time)}</TableCell>
-
-                        <TableCell align="left">{`$${amount.toString().substring(0, 4)}`}</TableCell>
-
-                        <TableCell align="left">{exnessId}</TableCell>
-
-                        <TableCell align="left">{transactionId}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-
-                {isNotFound && (
+        <Container>
+          <Card>
+            <TransactionListToolbar filterName={filterName} onFilterName={handleFilterByName} />
+            <Scrollbar>
+              <TableContainer sx={{ minWidth: 800 }}>
+                <Table>
+                  <TransactionListHead
+                    order={order}
+                    orderBy={orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={listTransactions.length}
+                    onRequestSort={handleRequestSort}
+                  />
                   <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
+                    {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+                      const { transactionId, time, amount, sender, message, exnessId } = row;
 
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
+                      return (
+                        <TableRow hover key={index} tabIndex={-1}>
+                          <TableCell align="left">{handleConvertTime(time)}</TableCell>
+
+                          <TableCell align="left">{`$${amount.toString().substring(0, 4)}`}</TableCell>
+
+                          <TableCell align="left">{exnessId}</TableCell>
+
+                          <TableCell align="left">{transactionId}</TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={listTransactions.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
-      </Container>
+                  {isNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <Paper
+                            sx={{
+                              textAlign: 'center',
+                            }}
+                          >
+                            <Typography variant="h6" paragraph>
+                              Not found
+                            </Typography>
+
+                            <Typography variant="body2">
+                              No results found for &nbsp;
+                              <strong>&quot;{filterName}&quot;</strong>.
+                              <br /> Try checking for typos or using complete words.
+                            </Typography>
+                          </Paper>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </Table>
+              </TableContainer>
+            </Scrollbar>
+
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={listTransactions.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Card>
+        </Container>
+      </> : <>
+        <Container item style={{ marginBottom: "20px", padding: "20px 20px 20px 20px" }}>
+          <Card>
+            <Typography variant="h4" gutterBottom style={{ textAlign: "center" }}>
+              Chức năng chỉ dành cho ADMIN
+            </Typography>
+          </Card>
+        </Container>
+      </>}
+
     </>
   );
 }

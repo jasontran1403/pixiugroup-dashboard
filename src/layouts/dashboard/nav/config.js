@@ -23,7 +23,6 @@ if (adminNav) {
     path: '/network',
     icon: icon('ic_network'),
   });
-  
   navConfig.push({
     title: 'transaction',
     path: '/transaction',
@@ -46,23 +45,12 @@ else if (managerNav) {
     path: '/network',
     icon: icon('ic_network'),
   });
-  
   navConfig.push({
     title: 'transaction',
     path: '/transaction',
     icon: icon('ic_transaction'),
   });
-  // navConfig.push({
-  //   title: 'commission',
-  //   path: '/commission',
-  //   icon: icon('ic_transaction'),
-  // });
-  // navConfig.push({
-  //   title: 'upload',
-  //   path: '/upload',
-  //   icon: icon('ic_disabled'),
-  // });
-} else {
+} else if (userNav) {
   navConfig.push({
     title: 'dashboard',
     path: '/dashboard',
@@ -73,26 +61,11 @@ else if (managerNav) {
     path: '/network',
     icon: icon('ic_network'),
   });
-  // navConfig.push({
-  //   title: 'Profile',
-  //   path: '/profile',
-  //   icon: icon('ic_user'),
-  // });
-  // navConfig.push({
-  //   title: '2FA',
-  //   path: '/2fa',
-  //   icon: icon('ic_lock'),
-  // });
   navConfig.push({
     title: 'transaction',
     path: '/transaction',
     icon: icon('ic_transaction'),
   });
-  // navConfig.push({
-  //   title: 'upload',
-  //   path: '/upload',
-  //   icon: icon('ic_disabled'),
-  // });
 }
 
 export default navConfig;
