@@ -67,13 +67,15 @@ export default function LoginPage() {
 
         <Container className='login-section' maxWidth="sm" style={{ color: "white" }}>
           <StyledContent>
+            <div className ="auth-form">
+
             <Typography variant="h4" gutterBottom>
               Sign in to Pixiu - Group
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
               Don’t have an account? {''}
-              <Link href={"/signup"} variant="subtitle2" style={{ cursor: "pointer", color: "white" }}>Sign up</Link>
+              <Link href={"/signup"} variant="subtitle2" style={{ cursor: "pointer", fontSize: "16px" , color: "black" }}>Sign up</Link>
             </Typography>
 
             {/* <Stack direction="row" spacing={2}>
@@ -97,6 +99,8 @@ export default function LoginPage() {
             </Divider> */}
 
             <LoginForm />
+            
+            </div>
           </StyledContent>
         </Container>
       </StyledRoot>

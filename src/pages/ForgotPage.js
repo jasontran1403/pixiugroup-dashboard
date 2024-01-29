@@ -52,42 +52,46 @@ export default function ForgotPage() {
 
       </Helmet>
 
-      <StyledRoot>
+      <StyledRoot className='forgot-section'>
+        
         {/* <a href={"/login"}>
           <img className='logo-img' src="/assets/logo.png" alt="logo-img" />
         </a> */}
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" gutterBottom>
-              Recovery your password at Pixiu - Group
-            </Typography>
-
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Already have an account? {''}
-              <Link href={"/login"} variant="subtitle2" style={{ cursor: "pointer" }}>Sign in</Link>
-            </Typography>
-
-            {/* <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
-              </Button>
-
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
-              </Button>
-
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
-              </Button>
-            </Stack> */}
-
-            {/* <Divider sx={{ my: 3 }}>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                OR
+            <div className='auth-form'> 
+              <Typography variant="h4" gutterBottom>
+                Recovery your password at Pixiu - Group
               </Typography>
-            </Divider> */}
 
-            <ForgotForm />
+              <Typography variant="body2" sx={{ mb: 5 }}>
+                Already have an account? {''}
+                <Link href={"/login"} variant="subtitle2" style={{ cursor: "pointer" }}>Sign in</Link>
+              </Typography>
+
+              {/* <Stack direction="row" spacing={2}>
+                <Button fullWidth size="large" color="inherit" variant="outlined">
+                  <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
+                </Button>
+
+                <Button fullWidth size="large" color="inherit" variant="outlined">
+                  <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
+                </Button>
+
+                <Button fullWidth size="large" color="inherit" variant="outlined">
+                  <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
+                </Button>
+              </Stack> */}
+
+              {/* <Divider sx={{ my: 3 }}>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  OR
+                </Typography>
+              </Divider> */}
+
+              <ForgotForm />
+
+            </div>
 
           </StyledContent>
         </Container>

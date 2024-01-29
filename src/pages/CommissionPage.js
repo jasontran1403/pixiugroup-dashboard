@@ -23,6 +23,7 @@ import { TransactionListHead, TransactionListToolbar } from '../sections/@dashbo
 const TABLE_HEAD = [
   { id: 'time', label: 'Thời gian', alignRight: false },
   { id: 'amount', label: 'Số tiền', alignRight: false },
+  { id: 'exnessId', label: 'Tài khoản Exness', alignRight: false },
   { id: 'message', label: 'Ghi chú', alignRight: false },
 ];
 
@@ -226,13 +227,15 @@ export default function CommissionPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                    const { transactionId, time, amount, sender, message } = row;
+                    const { transactionId, time, amount, sender, message, exnessId } = row;
 
                     return (
                       <TableRow hover key={index} tabIndex={-1}>
                         <TableCell align="left">{handleConvertTime(time)}</TableCell>
 
                         <TableCell align="left">{`$${amount.toString().substring(0, 4)}`}</TableCell>
+
+                        <TableCell align="left">{exnessId}</TableCell>
 
                         <TableCell align="left">{transactionId}</TableCell>
                       </TableRow>

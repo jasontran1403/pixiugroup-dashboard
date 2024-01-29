@@ -51,19 +51,21 @@ export default function SignupPage() {
         
       </Helmet>
 
-      <StyledRoot>
+      <StyledRoot className='signup-section'>
         {/* <a href= {"/login"}> <img className='logo-img' src="/assets/logo.png" alt="logo-img" /> </a> */}
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" gutterBottom>
-              Sign up to Pixiu - Group
-            </Typography>
+            <div className='auth-form'>
+              <Typography variant="h4" gutterBottom>
+                Sign up to Pixiu - Group
+              </Typography>
 
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Already have an account? {''}
-              <Link href={"/login"} variant="subtitle2" style={{ cursor: "pointer" }}>Sign in</Link>
-            </Typography>
-            <SignupForm />
+              <Typography variant="body2" sx={{ mb: 5 }}>
+                Already have an account? {''}
+                <Link href={"/login"} variant="subtitle2" style={{ cursor: "pointer" }}>Sign in</Link>
+              </Typography>
+              <SignupForm />
+            </div>
           </StyledContent>
         </Container>
       </StyledRoot>
