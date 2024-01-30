@@ -10,6 +10,8 @@ import {
 import { format } from 'date-fns';
 // components
 import Swal from 'sweetalert2';
+
+import { fCurrency, fCurrencyUSD, fNumber, fShortenNumber } from '../utils/formatNumber';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -234,7 +236,7 @@ export default function CommissionPage() {
                         <TableRow hover key={index} tabIndex={-1}>
                           <TableCell align="left">{handleConvertTime(time)}</TableCell>
 
-                          <TableCell align="left">{`$${amount.toString().substring(0, 4)}`}</TableCell>
+                          <TableCell align="left">{fCurrencyUSD(amount)}</TableCell>
 
                           <TableCell align="left">{exnessId}</TableCell>
 
