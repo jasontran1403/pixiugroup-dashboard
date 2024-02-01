@@ -724,7 +724,7 @@ export default function DashboardAppPage() {
               {listExness.map((item, index) => {
                 return <MenuItem key={index} onClick={() => { handleChangeExness(item.exnessId, item.fullname) }}>
                   <Iconify sx={{ mr: 2 }} />
-                  {item.exnessId}
+                  {item.exnessId} - {item.fullname}
                 </MenuItem>
               })}
             </Popover>
