@@ -671,7 +671,7 @@ export default function DashboardAppPage() {
                 backgroundColor: "white",
                 border: "1px solid #ccc",
                 boxShadow: "2px 2px 2px #ccc",
-                height: "180px",
+                maxHeight: "180px",
                 overflowY: "scroll"
               }}
             >
