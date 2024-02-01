@@ -123,6 +123,7 @@ export default function DashboardAppPage() {
   const [listExnessFiltered, setListExnessFiltered] = useState([])
   const [isRender, setIsRender] = useState(false);
   const [clearSearchInput, setClearSearchInput] = useState(false);
+  const [info, setInfo] = useState("");
 
   useEffect(() => {
     if (isAdmin && currentEmail !== "root@gmail.com") {
@@ -145,14 +146,6 @@ export default function DashboardAppPage() {
     }
   }, []);
 
-  const handleOpen = (event) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setOpen(null);
-  };
-
   const handleOpen2 = (event) => {
     setOpen2(event.currentTarget);
   };
@@ -174,24 +167,7 @@ export default function DashboardAppPage() {
     handleClose3();
   };
 
-  const handleChangeMonth = (month) => {
-    if (currentExness === "") {
-      handleClose();
-      return;
-    }
-    if (currentExness === "Chọn Exness ID") {
-      // setCurrentMonth(month);
-      // fetchData(currentEmail, month);
-    } else {
-      setCurrentMonth(month);
-      fetchData(currentExness, month);
-    }
-
-
-    handleClose();
-  }
-
-  const handleChangeExness = (exness) => {
+  const handleChangeExness = (exness, fullname) => {
     if (exness === "Chọn Exness ID") {
       handleClose2();
       return;
@@ -202,6 +178,7 @@ export default function DashboardAppPage() {
     // Lấy giá trị Unix timestamp
     const unixTimeStamp = Math.floor(currentDate.getTime() / 1000);
     setCurrentExness(exness);
+    setInfo(`${exness} - ${fullname}`);
     fetchData(exness, unixTimeStamp - (86400 * 7), unixTimeStamp);
     fetchPrev(exness);
     setClearSearchInput(false);
@@ -214,7 +191,7 @@ export default function DashboardAppPage() {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${prod}/api/v1/secured/get-exness/${encodeURI(localStorage.getItem("r") === "a" ? "all" : localStorage.getItem("r") === "m" ? `m-${currentEmail}` : currentEmail)}`,
+      url: `${prod}/api/v1/secured/get-exness-pixiu/${encodeURI(localStorage.getItem("r") === "a" ? "all" : localStorage.getItem("r") === "m" ? `m-${currentEmail}` : currentEmail)}`,
       headers: {
         'Authorization': `Bearer ${currentAccessToken}`
       }
@@ -222,12 +199,7 @@ export default function DashboardAppPage() {
 
     axios(config)
       .then((response) => {
-        if (response.data.length > 0) {
-          const updatedList = ["Chọn Exness ID"].concat(response.data);
-          setListExness(updatedList);
-
-          setCurrentExness("Chọn Exness ID");
-        }
+        setListExness(response.data);
       })
       .catch((error) => {
         if (error.response.status === 403) {
@@ -646,7 +618,6 @@ export default function DashboardAppPage() {
   };
 
   const handleDatePicked = (time) => {
-    console.log(currentExness);
     if (currentExness !== "Chọn Exness ID") {
       fetchData(currentExness, (time.startDate.getTime() / 1000), time.endDate.getTime() / 1000);
     }
@@ -654,7 +625,7 @@ export default function DashboardAppPage() {
   }
 
   const handleSearch = (keyword) => {
-    const result = listExness.filter((item) => item.includes(keyword));
+    const result = listExness.filter((item) => item.exnessId.includes(keyword));
     setListExnessFiltered(result);
     setOpen2(!!keyword);
   }
@@ -675,14 +646,17 @@ export default function DashboardAppPage() {
             <input
               type="text"
               onChange={(e) => handleSearch(e.target.value)}
-              placeholder={"Nhập Exness ID cần tìm"}
+              placeholder={"Nhập Exness ID"}
               className="button-30"
+              style={{ width: "350px" }}
             />
             <span className='search-section'>
               <input
                 type="text"
-                disabled value={currentExness}
+                disabled value={info}
+                placeholder="Chưa chọn Exness ID"
                 className="button-30"
+                style={{ width: "350px" }}
               />
             </span>
 
@@ -692,17 +666,20 @@ export default function DashboardAppPage() {
               style={{
                 display: open2 ? 'block' : 'none',
                 position: "absolute",
-                minWidth: "240px",
+                minWidth: "300px",
                 zIndex: 2,
                 backgroundColor: "white",
                 border: "1px solid #ccc",
                 boxShadow: "2px 2px 2px #ccc",
+                height: "180px",
+                overflowY: "scroll"
               }}
             >
               {listExnessFiltered?.map((item, index) => {
-                return <MenuItem key={index} onClick={() => { handleChangeExness(item) }}>
+
+                return <MenuItem key={index} onClick={() => { handleChangeExness(item.exnessId, item.fullname) }}>
                   <Iconify sx={{ mr: 2 }} />
-                  {item}
+                  {item.exnessId} - {item.fullname}
                 </MenuItem>
               })}
             </div>
@@ -712,15 +689,17 @@ export default function DashboardAppPage() {
             <input
               type="text"
               onClick={handleOpen2}
-              placeholder={currentExness}
+              placeholder="Chọn Exness ID"
               className="button-30"
               readOnly
             />
             <span className='search-section'>
               <input
                 type="text"
-                disabled value={currentExness}
+                disabled value={info}
+                placeholder="Chưa chọn Exness ID"
                 className="button-30"
+                style={{ width: "350px" }}
               />
             </span>
             <Popover
@@ -743,9 +722,9 @@ export default function DashboardAppPage() {
               }}
             >
               {listExness.map((item, index) => {
-                return <MenuItem key={index} onClick={() => { handleChangeExness(item) }}>
+                return <MenuItem key={index} onClick={() => { handleChangeExness(item.exnessId, item.fullname) }}>
                   <Iconify sx={{ mr: 2 }} />
-                  {item}
+                  {item.exnessId}
                 </MenuItem>
               })}
             </Popover>
@@ -812,7 +791,7 @@ export default function DashboardAppPage() {
               </Grid>
 
               <Grid item xs={12} sm={6} md={3}>
-              <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
                 <AppWidgetSummaryUSD classColor={"commission-background"} className="commission-section" sx={{ mb: 2 }} title="Total Commissions" total={commission} color="info" icon={'mi:layers'} />
                 <AppWidgetSummaryUSD classColor={"deposit-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
               </Grid>
@@ -883,7 +862,7 @@ export default function DashboardAppPage() {
                 <AppWidgetSummaryUSD classColor={"commission-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
                 <AppWidgetSummaryUSD classColor={"commission-background"} className="commission-section" sx={{ mb: 2 }} title="Total Commission" total={commission} color="info" icon={'mi:layers'} />
               </Grid>
-              
+
               <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
                 <AppWidgetSummary className="withdraw-section" sx={{ mb: 2 }} title="Total Withdraws" total={prevWithdraw} icon={'iconoir:coins-swap'} />

@@ -285,7 +285,7 @@ function TransactionItem() {
                       <TableCell component="th" scope="row" padding="none">
                         <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
                           <Typography variant="subtitle2" noWrap>
-                            {role}
+                            {role === "MANAGER" ? "Leader" : "Nhà Đầu Tư"}
                           </Typography>
                         </Stack>
                       </TableCell>

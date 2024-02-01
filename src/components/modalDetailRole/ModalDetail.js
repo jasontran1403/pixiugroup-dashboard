@@ -108,7 +108,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
                 if (response.status === 200) {
                     onClose();
                     Swal.fire({
-                        title: "Success",
+                        title: "Thay đổi vai trò thành công!",
                         icon: "success",
                         timer: 3000,
                         position: 'center',
@@ -157,7 +157,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
                         <TextField
                             onClick={handleOpen2}
                             name="role"
-                            value={role}
+                            value={role === "MANAGER" ? "Leader" : "Nhà Đầu Tư"}
                             label="Vai trò"
                         />
                         <Popover
@@ -182,7 +182,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
                             {listExness.map((item, index) => {
                                 return <MenuItem key={index} onClick={() => { handleChangeExness(item.role) }}>
                                     <Iconify sx={{ mr: 2 }} />
-                                    {item.role}
+                                    {item.role === "MANAGER" ? "Leader" : "Nhà Đầu Tư"}
                                 </MenuItem>
                             })}
                         </Popover>

@@ -56,7 +56,7 @@ function applySortFilter(array, comparator, query) {
   });
   if (query) {
     return filter(array, (_user) => _user.amount.toString().toLowerCase().indexOf(query.toString().toLowerCase()) !== -1 ||
-      _user.transactionId.toString().toLowerCase().indexOf(query.toString().toLowerCase()) !== -1);
+      _user.exnessId.toString().toLowerCase().indexOf(query.toString().toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -79,6 +79,7 @@ export default function CommissionPage() {
   const [listTransactions, setListTransactions] = useState([]);
 
   const [isAdmin] = useState(localStorage.getItem("r") === "a");
+  const [isManager] = useState(localStorage.getItem("r") === "m");
 
   const [currentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
   const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
@@ -191,8 +192,8 @@ export default function CommissionPage() {
         <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
       </Helmet>
 
-      {isAdmin ? <>
-        <Container item style={{ marginBottom: "20px" }}>
+      {isAdmin || isManager ? <>
+        {/* <Container item style={{ marginBottom: "20px" }}>
           <Card>
             {isAdmin ? <Box>
               <Typography variant="h4" gutterBottom>
@@ -213,7 +214,7 @@ export default function CommissionPage() {
               </Grid>
             </Box> : <></>}
           </Card>
-        </Container>
+        </Container> */}
 
         <Container>
           <Card>
@@ -240,7 +241,7 @@ export default function CommissionPage() {
 
                           <TableCell align="left">{exnessId}</TableCell>
 
-                          <TableCell align="left">{transactionId}</TableCell>
+                          <TableCell align="left">{message}</TableCell>
                         </TableRow>
                       );
                     })}
