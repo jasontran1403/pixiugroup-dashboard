@@ -79,16 +79,25 @@ export default function CommissionPage() {
   const [listTransactions, setListTransactions] = useState([]);
 
   const [isAdmin] = useState(localStorage.getItem("r") === "a");
+  const [isSuperAdmin] = useState(localStorage.getItem("r") === "sa");
   const [isManager] = useState(localStorage.getItem("r") === "m");
 
   const [currentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
   const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
 
   useEffect(() => {
+    let urlConverted = "";
+    if (isSuperAdmin) {
+      urlConverted = `${prod}/api/v1/secured/get-all-commission-pixiu-super`;
+    } else if (isAdmin) {
+      urlConverted = `${prod}/api/v1/secured/get-all-commission-pixiu-admin`;
+    } else if (isManager) {
+      urlConverted = `${prod}/api/v1/secured/get-all-commission-pixiu-manager`;
+    }
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${prod}/api/v1/secured/get-all-commission-pixiu`,
+      url: urlConverted,
       headers: {
         'Authorization': `Bearer ${currentAccessToken}`
       }

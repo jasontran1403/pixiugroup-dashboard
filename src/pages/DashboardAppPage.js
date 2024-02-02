@@ -110,6 +110,7 @@ export default function DashboardAppPage() {
   const [prevDeposit, setPrevDeposit] = useState(0.0);
   const [prevWithdraw, setPrevWithdraw] = useState(0.0);
   const [isAdmin] = useState(localStorage.getItem("r") === "a");
+  const [isSuperAdmin] = useState(localStorage.getItem("r") === "sa");
   const [isManager] = useState(localStorage.getItem("r") === "m");
   const [isUser] = useState(localStorage.getItem("r") === "u");
   const [totalCommissions, setTotalCommissions] = useState(0.0);
@@ -126,7 +127,7 @@ export default function DashboardAppPage() {
   const [info, setInfo] = useState("");
 
   useEffect(() => {
-    if (isAdmin && currentEmail !== "root@gmail.com") {
+    if (isSuperAdmin || isAdmin && currentEmail !== "root@gmail.com") {
       const config = {
         method: 'get',
         maxBodyLength: Infinity,
@@ -191,7 +192,7 @@ export default function DashboardAppPage() {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${prod}/api/v1/secured/get-exness-pixiu/${encodeURI(localStorage.getItem("r") === "a" ? "all" : localStorage.getItem("r") === "m" ? `m-${currentEmail}` : currentEmail)}`,
+      url: `${prod}/api/v1/secured/get-exness-pixiu/${encodeURI(localStorage.getItem("r") === "a" || localStorage.getItem("r") === "sa" ? "all" : localStorage.getItem("r") === "m" ? `m-${currentEmail}` : currentEmail)}`,
       headers: {
         'Authorization': `Bearer ${currentAccessToken}`
       }
@@ -235,7 +236,7 @@ export default function DashboardAppPage() {
 
   useEffect(() => {
     let urlConvert = "";
-    if (isAdmin) {
+    if (isSuperAdmin || isAdmin) {
       urlConvert = `${prod}/api/v1/secured/get-transaction/email=${"all"}`
     } else {
       urlConvert = `${prod}/api/v1/secured/get-transaction/email=${currentEmail}`
@@ -361,10 +362,18 @@ export default function DashboardAppPage() {
 
     const encodedFrom = encodeURIComponent(timeFrom);
     const encodedTo = encodeURIComponent(timeTo);
+    let urlConverted = "";
+    if (isAdmin) {
+      urlConverted = `${prod}/api/v1/secured/get-info-by-exness-time-range-admin/exness=${exness}&from=${encodedFrom}&to=${encodedTo}`;
+    } else if (isManager) {
+      urlConverted = `${prod}/api/v1/secured/get-info-by-exness-time-range-manager/exness=${exness}&from=${encodedFrom}&to=${encodedTo}`;
+    } else if (isSuperAdmin) {
+      urlConverted = `${prod}/api/v1/secured/get-info-by-exness-time-range-super-admin/exness=${exness}&from=${encodedFrom}&to=${encodedTo}`;
+    }
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${prod}/api/v1/secured/get-info-by-exness-time-range/exness=${exness}&from=${encodedFrom}&to=${encodedTo}`,
+      url: urlConverted,
       headers: {
         'Authorization': `Bearer ${currentAccessToken}`
       }
@@ -641,7 +650,7 @@ export default function DashboardAppPage() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Dashboard
         </Typography>
-        {isAdmin || isManager ?
+        {isSuperAdmin || isAdmin || isManager ?
           <Grid style={{ marginBottom: "16px" }} item xs={12} sm={12} md={12} >
             <input
               type="text"
@@ -731,7 +740,7 @@ export default function DashboardAppPage() {
           </Grid>
         }
         <Grid container spacing={3}>
-          {isAdmin ? (
+          {isSuperAdmin || isAdmin ? (
             <>
               <Grid item xs={12} md={12} lg={6} >
                 <Card>
@@ -905,7 +914,7 @@ export default function DashboardAppPage() {
             </>
           )}
 
-          {isAdmin && <Grid item xs={12} md={12} lg={12}>
+          {isSuperAdmin || isAdmin && <Grid item xs={12} md={12} lg={12}>
             <AppNewsUpdate2 />
           </Grid>}
 
