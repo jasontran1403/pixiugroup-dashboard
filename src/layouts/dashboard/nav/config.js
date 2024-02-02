@@ -7,35 +7,35 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 
 const r = localStorage.getItem("r");
 
-const navConfig = [];
 const adminNav = r === "a";
 const superNav = r === "sa";
 const managerNav = r === "m";
 
-navConfig.push({
-  title: 'dashboard',
-  path: '/dashboard',
-  icon: icon('ic_analytics'),
-});
-navConfig.push({
-  title: 'network',
-  path: '/network',
-  icon: icon('ic_network'),
-});
-navConfig.push({
-  title: 'transaction',
-  path: '/transaction',
-  icon: icon('ic_transaction'),
-});
+const navConfig = [
+  {
+    title: 'dashboard',
+    path: '/dashboard',
+    icon: icon('ic_analytics'),
+  },
+  {
+    title: 'network',
+    path: '/network',
+    icon: icon('ic_network'),
+  },
+  {
+    title: 'transaction',
+    path: '/transaction',
+    icon: icon('ic_transaction'),
+  },
+];
+
 
 if (superNav || adminNav || managerNav) {
   navConfig.push({
     title: 'commission',
     path: '/commission',
-    icon: icon('ic_transaction'),
+    icon: icon('ic_lock'),
   });
 }
-
-console.log(navConfig);
 
 export default navConfig;
