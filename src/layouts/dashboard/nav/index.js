@@ -15,6 +15,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 import { prod } from "../../../utils/env";
 //
+import navConfigManager from './configManager';
 import navConfig from './config';
 
 // ----------------------------------------------------------------------
@@ -43,6 +44,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
   const [refCode, setRefCode] = useState("");
   const isDesktop = useResponsive('up', 'lg');
+  const [isUser] = useState(localStorage.getItem("r") === "u");
 
   useEffect(() => {
    
@@ -76,7 +78,7 @@ export default function Nav({ openNav, onCloseNav }) {
   }, []);
 
   useEffect(() => {
-    if (openNav) {
+    if (openNav && isUser) {
       onCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +110,7 @@ export default function Nav({ openNav, onCloseNav }) {
         </Link>
       </Box>
 
-      <NavSection data={navConfig} />
+      {isUser ? <NavSection data={navConfig} /> : <NavSection data={navConfigManager} />}
       <div className='ref-container'>
                 <h3 className='ref-title' >Refferal code:</h3>
                 <span className='ref-code'> {refCode} </span>

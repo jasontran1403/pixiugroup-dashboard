@@ -201,7 +201,7 @@ export default function CommissionPage() {
         <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
       </Helmet>
 
-      {isAdmin || isManager ? <>
+      {isSuperAdmin || isAdmin || isManager ? <>
         {/* <Container item style={{ marginBottom: "20px" }}>
           <Card>
             {isAdmin ? <Box>
