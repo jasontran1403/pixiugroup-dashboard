@@ -32,10 +32,11 @@ export default function ModalExness({ isOpen, onClose }) {
     const [message, setMessage] = useState("");
     const [reason, setReason] = useState("");
     const [refferal, setRefferal] = useState("");
+    const [name, setName] = useState("");
 
     const handleSubmit = () => {
         onClose();
-        if (exnessId === "" || server === "" || password === "" || passview === "" || reason === "" || message === "" || refferal === "") {
+        if (exnessId === "" || server === "" || password === "" || passview === "" || reason === "" || message === "" || refferal === "" || name === "") {
             Swal.fire({
                 title: "Vui lòng nhập đủ các thông tin!",
                 icon: "error",
@@ -49,6 +50,7 @@ export default function ModalExness({ isOpen, onClose }) {
         const data = JSON.stringify({
             "email": currentEmail,
             "exness": exnessId,
+            "name": name,
             "server": server,
             "password": password,
             "passview": passview,
@@ -135,6 +137,12 @@ export default function ModalExness({ isOpen, onClose }) {
                             name="exnessId"
                             value={exnessId}
                             label="Exness ID"
+                            required
+                        />
+                        <TextField onChange={(e) => { setName(e.target.value) }}
+                            name="name"
+                            value={name}
+                            label="Tên"
                             required
                         />
                         <TextField onChange={(e) => { setServer(e.target.value) }}

@@ -90,7 +90,7 @@ export default function CommissionPage() {
     if (isSuperAdmin) {
       urlConverted = `${prod}/api/v1/secured/get-all-commission-pixiu-super`;
     } else if (isAdmin) {
-      urlConverted = `${prod}/api/v1/secured/get-all-commission-pixiu-admin`;
+      urlConverted = `${prod}/api/v1/secured/get-all-commission-pixiu-admin/${currentEmail}`;
     } else if (isManager) {
       urlConverted = `${prod}/api/v1/secured/get-all-commission-pixiu-manager`;
     }
