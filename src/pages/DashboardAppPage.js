@@ -188,11 +188,12 @@ export default function DashboardAppPage() {
 
   useEffect(() => {
     setIsLoading(true);
+    const urlConverted = `${prod}/api/v1/secured/get-exness-pixiu/${encodeURI(localStorage.getItem("r") === "a" || localStorage.getItem("r") === "sa" ? "all" : localStorage.getItem("r") === "m" ? `m-${currentEmail}` : currentEmail)}/${currentEmail}`;
 
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${prod}/api/v1/secured/get-exness-pixiu/${encodeURI(localStorage.getItem("r") === "a" || localStorage.getItem("r") === "sa" ? "all" : localStorage.getItem("r") === "m" ? `m-${currentEmail}` : currentEmail)}`,
+      url: urlConverted,
       headers: {
         'Authorization': `Bearer ${currentAccessToken}`
       }
