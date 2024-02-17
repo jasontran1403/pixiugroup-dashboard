@@ -6,7 +6,23 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import {
-  Card, Table, Stack, Paper, Avatar, Button, Popover, Checkbox, TableRow, MenuItem, TableBody, TableCell, Container, Typography, IconButton, TableContainer, TablePagination,
+  Card,
+  Table,
+  Stack,
+  Paper,
+  Avatar,
+  Button,
+  Popover,
+  Checkbox,
+  TableRow,
+  MenuItem,
+  TableBody,
+  TableCell,
+  Container,
+  Typography,
+  IconButton,
+  TableContainer,
+  TablePagination,
 } from '@mui/material';
 import Swal from 'sweetalert2';
 import { format } from 'date-fns';
@@ -17,7 +33,7 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { TransactionListHead, TransactionListToolbar } from '../sections/@dashboard/transactions';
-import { prod, dev } from "../utils/env";
+import { prod, dev } from '../utils/env';
 
 // mock
 // ----------------------------------------------------------------------
@@ -56,8 +72,12 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.amount.toString().toLowerCase().indexOf(query.toString().toLowerCase()) !== -1 ||
-    _user.exnessId.toString().indexOf(query.toString()) !== -1);
+    return filter(
+      array,
+      (_user) =>
+        _user.amount.toString().toLowerCase().indexOf(query.toString().toLowerCase()) !== -1 ||
+        _user.exnessId.toString().indexOf(query.toString()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -72,67 +92,59 @@ export default function TransactionPage() {
 
   const [orderBy, setOrderBy] = useState('name');
 
-  const [filterName, setFilterName] = useState("");
+  const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [listTransactions, setListTransactions] = useState([]);
 
-  const [isAdmin] = useState(localStorage.getItem("r") === "a");
-  const [isManager] = useState(localStorage.getItem("r") === "m");
-  const [isUser] = useState(localStorage.getItem("r") === "u");
+  const [isAdmin] = useState(localStorage.getItem('r') === 'a');
+  const [isManager] = useState(localStorage.getItem('r') === 'm');
+  const [isUser] = useState(localStorage.getItem('r') === 'u');
 
-  const [currentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
-  const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
+  const [currentEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email') : '');
+  const [currentAccessToken] = useState(
+    localStorage.getItem('access_token') ? localStorage.getItem('access_token') : ''
+  );
 
   useEffect(() => {
-    let urlConvert = "";
+    let urlConvert = '';
     if (isAdmin) {
-      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${"all"}`
+      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${'all'}`;
     } else {
-      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${currentEmail}`
+      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${currentEmail}`;
     }
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
       url: urlConvert,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         setListTransactions(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
-
   }, []);
 
   const handleConvertTime = (timeunix) => {
     return format(new Date(timeunix * 1000), 'HH:mm:ss dd/MM/yyyy');
-  }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -164,8 +176,7 @@ export default function TransactionPage() {
     <>
       <Helmet>
         <title> Transaction </title>
-        <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
-
+        <link rel="icon" type="image/x-icon" href="/assets/logo.svg" />
       </Helmet>
 
       <Container>
@@ -190,14 +201,14 @@ export default function TransactionPage() {
                       <TableRow hover key={id} tabIndex={-1}>
                         <TableCell align="left">{exnessId}</TableCell>
 
-                        <TableCell align="left">{fCurrency(amount/100)}</TableCell>
+                        <TableCell align="left">{fCurrency(amount / 100)}</TableCell>
 
                         <TableCell align="left">{handleConvertTime(time)}</TableCell>
 
                         <TableCell align="left">{type}</TableCell>
 
                         <TableCell align="left">
-                          <Label color={("success")}>{"success"}</Label>
+                          <Label color={'success'}>{'success'}</Label>
                         </TableCell>
                       </TableRow>
                     );

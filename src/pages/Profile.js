@@ -9,7 +9,7 @@ import { LoadingButton } from '@mui/lab';
 import Swal from 'sweetalert2';
 import FormData from 'form-data';
 import Iconify from '../components/iconify';
-import { prod, dev } from "../utils/env";
+import { prod, dev } from '../utils/env';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -22,7 +22,6 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
-
 
 const style = {
   position: 'absolute',
@@ -42,21 +41,20 @@ const StyledContent = styled('div')(({ theme }) => ({
   flexDirection: 'column',
 }));
 
-
-
 export default function Profile() {
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [bio, setBio] = useState("");
-  const [currentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
-  const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
-  const [refCode, setRefCode] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [bio, setBio] = useState('');
+  const [currentEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email') : '');
+  const [currentAccessToken] = useState(
+    localStorage.getItem('access_token') ? localStorage.getItem('access_token') : ''
+  );
+  const [refCode, setRefCode] = useState('');
 
-  
   useEffect(() => {
     const data = JSON.stringify({
-      "email": currentEmail
+      email: currentEmail,
     });
 
     const config = {
@@ -65,49 +63,36 @@ export default function Profile() {
       url: `${prod}/api/v1/secured/get-info`,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentAccessToken}`
+        Authorization: `Bearer ${currentAccessToken}`,
       },
-      "data": data
+      data: data,
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         setRefCode(response.data.refCode);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else if (error.response.status === 410) {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        } else {
-          console.log(error.response);
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
-
   }, []);
 
-
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState('');
   const [fileSelected, setFileSelected] = useState(null);
 
   useEffect(() => {
     const data = JSON.stringify({
-      "email": currentEmail
+      email: currentEmail,
     });
 
     const config = {
@@ -116,40 +101,30 @@ export default function Profile() {
       url: `${prod}/api/v1/secured/get-info`,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentAccessToken}`
+        Authorization: `Bearer ${currentAccessToken}`,
       },
-      "data": data
+      data: data,
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         setFirstName(response.data.firstName);
         setLastName(response.data.lastName);
         setBio(response.data.bio);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
-
   }, [currentEmail]);
 
   useEffect(() => {
@@ -157,47 +132,45 @@ export default function Profile() {
       method: 'get',
       url: `${prod}/api/v1/secured/avatar/${currentEmail}`,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
 
     axios(config)
       .then((response) => {
         // Chuyển dữ liệu blob thành URL cho hình ảnh
-        if (response.data === "") {
-          setImage("assets/images/avatars/25.jpg");
-          document.getElementById('profile-picture').src = "assets/images/avatars/25.jpg";
-          localStorage.setItem("image", "assets/images/avatars/25.jpg");
+        if (response.data === '') {
+          setImage('assets/images/avatars/25.jpg');
+          document.getElementById('profile-picture').src = 'assets/images/avatars/25.jpg';
+          localStorage.setItem('image', 'assets/images/avatars/25.jpg');
         } else {
           setImage(response.data);
           document.getElementById('profile-picture').src = response.data;
-          localStorage.setItem("image", response.data);
+          localStorage.setItem('image', response.data);
         }
-       
       })
       .catch((error) => {
         console.log(error);
       });
-
   }, []);
 
   const handleSubmit = () => {
-    if (firstName === "" || lastName === "") {
+    if (firstName === '' || lastName === '') {
       Swal.fire({
-        title: "All information is required!",
-        icon: "error",
+        title: 'All information is required!',
+        icon: 'error',
         timer: 3000,
         position: 'center',
-        showConfirmButton: false
+        showConfirmButton: false,
       });
       return;
     }
 
     const data = JSON.stringify({
-      "email": currentEmail,
-      "firstName": firstName,
-      "lastName": lastName,
-      "bio": bio,
+      email: currentEmail,
+      firstName: firstName,
+      lastName: lastName,
+      bio: bio,
     });
 
     const config = {
@@ -206,48 +179,38 @@ export default function Profile() {
       url: `${prod}/api/v1/secured/edit-info`,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentAccessToken}`
+        Authorization: `Bearer ${currentAccessToken}`,
       },
-      "data": data
+      data: data,
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
-        if (response.data === "OK") {
+        if (response.data === 'OK') {
           Swal.fire({
-            title: "Update information successful",
-            icon: "success",
+            title: 'Update information successful',
+            icon: 'success',
             timer: 3000,
             position: 'center',
-            showConfirmButton: false
+            showConfirmButton: false,
           }).then(() => {
             window.location.reload();
           });
         }
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
-
   };
 
   const handleFileSelect = (e) => {
@@ -260,15 +223,15 @@ export default function Profile() {
       maxBodyLength: Infinity,
       url: `${prod}/api/v1/secured/upload-avatar`,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`,
+        Authorization: `Bearer ${currentAccessToken}`,
       },
-      "data": data,
+      data: data,
     };
 
     axios(config)
       .then((response) => {
         document.getElementById('profile-picture').src = response.data;
-        localStorage.setItem("image", response.data);
+        localStorage.setItem('image', response.data);
         setImage(response.data);
       })
       .catch((error) => {
@@ -280,56 +243,110 @@ export default function Profile() {
     <>
       <Helmet>
         <title> Profile </title>
-        <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
-
+        <link rel="icon" type="image/x-icon" href="/assets/logo.svg" />
       </Helmet>
 
       <Container>
         <StyledContent>
           <Stack spacing={3}>
             <div className="card">
-
               <div className="banner">
-                <div className = "profile-img">
-                <Button className="avatar-btn" fullWidth component="label" >      
-                  <img src={image} alt="profile-img" id="profile-picture"/>
+                <div className="profile-img">
+                  <Button className="avatar-btn" fullWidth component="label">
+                    <img src={image} alt="profile-img" id="profile-picture" />
 
-                  <div className="overlay">
-                    <div className="text">Change Avatar </div>
-                  </div> 
-                <VisuallyHiddenInput type="file" onChange={(e) => { handleFileSelect(e) }} />
-                
-                </Button>                            
+                    <div className="overlay">
+                      <div className="text">Change Avatar </div>
+                    </div>
+                    <VisuallyHiddenInput
+                      type="file"
+                      onChange={(e) => {
+                        handleFileSelect(e);
+                      }}
+                    />
+                  </Button>
                 </div>
-               
-
               </div>
               <div className="menu">
-                <div className="opener"><span /><span /><span /></div>
+                <div className="opener">
+                  <span />
+                  <span />
+                  <span />
+                </div>
               </div>
-              <h2 className="name">{firstName} {lastName} </h2>
+              <h2 className="name">
+                {firstName} {lastName}{' '}
+              </h2>
               <div className="title">Gators Users</div>
               <div className="actions">
-                  <div className="follow-info">
-                      <h2><a href="#"><span>First Name</span><small > {firstName} </small></a></h2>
-                      <h2><a href="#"><span>Refcode</span><small>{refCode}</small></a></h2>
-                  </div>
-                  <div className="follow-info">
-                      <h2><a href="#"><span>Last Name</span><small>{lastName}</small></a></h2>
-                      <h2><a href="#"><span>Mail</span><small>{currentEmail}</small></a></h2>
-                  </div>
-                
+                <div className="follow-info">
+                  <h2>
+                    <a href="#">
+                      <span>First Name</span>
+                      <small> {firstName} </small>
+                    </a>
+                  </h2>
+                  <h2>
+                    <a href="#">
+                      <span>Refcode</span>
+                      <small>{refCode}</small>
+                    </a>
+                  </h2>
+                </div>
+                <div className="follow-info">
+                  <h2>
+                    <a href="#">
+                      <span>Last Name</span>
+                      <small>{lastName}</small>
+                    </a>
+                  </h2>
+                  <h2>
+                    <a href="#">
+                      <span>Mail</span>
+                      <small>{currentEmail}</small>
+                    </a>
+                  </h2>
+                </div>
               </div>
               <div className="desc">{bio}</div>
             </div>
 
-
-            <h3 className='profile-title'> Update profile</h3>
-            <TextField placeholder='Enter your Email' className="input-profile-email" name="email" type="text" value={currentEmail} readOnly />
-            <TextField placeholder='Enter your FirstName ' name="firstName" type="text" value={firstName || ''}  onChange={(e) => { setFirstName(e.target.value) }  } />
-            <TextField placeholder= 'Enter your lastname' name="lastname" type="text" value={lastName || ''} onChange={(e) => { setLastName(e.target.value) }} />
-            <TextField placeholder= 'Enter your description' name="bio" type="text" value={bio || ''} onChange={(e) => { setBio(e.target.value) }} />
-
+            <h3 className="profile-title"> Update profile</h3>
+            <TextField
+              placeholder="Enter your Email"
+              className="input-profile-email"
+              name="email"
+              type="text"
+              value={currentEmail}
+              readOnly
+            />
+            <TextField
+              placeholder="Enter your FirstName "
+              name="firstName"
+              type="text"
+              value={firstName || ''}
+              onChange={(e) => {
+                setFirstName(e.target.value);
+              }}
+            />
+            <TextField
+              placeholder="Enter your lastname"
+              name="lastname"
+              type="text"
+              value={lastName || ''}
+              onChange={(e) => {
+                setLastName(e.target.value);
+              }}
+            />
+            <TextField
+              placeholder="Enter your description"
+              name="bio"
+              type="text"
+              value={bio || ''}
+              onChange={(e) => {
+                setBio(e.target.value);
+              }}
+            />
 
             <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleSubmit}>
               Update profile

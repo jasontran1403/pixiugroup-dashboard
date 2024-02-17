@@ -34,7 +34,7 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-import { prod, dev } from "../utils/env";
+import { prod, dev } from '../utils/env';
 // mock
 
 const TABLE_HEAD = [
@@ -98,13 +98,15 @@ export default function ExnessPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [currentExness, setCurrentExness] = useState("");
+  const [currentExness, setCurrentExness] = useState('');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
-  const [currentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
-  const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
-  const [image, setImage] = useState("");
+  const [currentEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email') : '');
+  const [currentAccessToken] = useState(
+    localStorage.getItem('access_token') ? localStorage.getItem('access_token') : ''
+  );
+  const [image, setImage] = useState('');
 
   useEffect(() => {
     const config = {
@@ -112,35 +114,26 @@ export default function ExnessPage() {
       maxBodyLength: Infinity,
       url: `${prod}/api/v1/secured/get-all-exnessLisa/email=${currentEmail}`,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         setListExness(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
   }, []);
 
@@ -167,9 +160,9 @@ export default function ExnessPage() {
       setIsLoading(false);
     }, 500);
 
-    return (() => {
+    return () => {
       clearTimeout(timeout);
-    })
+    };
   }, []);
 
   const handleOpenMenu = (event) => {
@@ -234,13 +227,12 @@ export default function ExnessPage() {
     <>
       <Helmet>
         <title> Exness </title>
-        <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
-
+        <link rel="icon" type="image/x-icon" href="/assets/logo.svg" />
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="end" mb={5}>
-          <Typography className='exness-title' variant="h4" gutterBottom>
+          <Typography className="exness-title" variant="h4" gutterBottom>
             Exness
           </Typography>
           <Button onClick={openModal} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
@@ -250,7 +242,12 @@ export default function ExnessPage() {
         </Stack>
 
         <Card>
-          <UserListToolbar currentChose={selected} numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar
+            currentChose={selected}
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -282,7 +279,7 @@ export default function ExnessPage() {
                         </TableCell> */}
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: '15px' }}>
                             <Typography variant="subtitle2" noWrap>
                               {exnessId}
                             </Typography>
@@ -290,7 +287,7 @@ export default function ExnessPage() {
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: '15px' }}>
                             <Typography variant="subtitle2" noWrap>
                               {server}
                             </Typography>
@@ -298,7 +295,7 @@ export default function ExnessPage() {
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: '15px' }}>
                             <Typography variant="subtitle2" noWrap>
                               {password}
                             </Typography>
@@ -306,7 +303,7 @@ export default function ExnessPage() {
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: '15px' }}>
                             <Typography variant="subtitle2" noWrap>
                               {passview}
                             </Typography>
@@ -314,7 +311,7 @@ export default function ExnessPage() {
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: '15px' }}>
                             <Typography variant="subtitle2" noWrap>
                               {message}
                             </Typography>
@@ -322,7 +319,7 @@ export default function ExnessPage() {
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
+                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: '15px' }}>
                             <Typography variant="subtitle2" noWrap>
                               {reason}
                             </Typography>
@@ -330,8 +327,16 @@ export default function ExnessPage() {
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: "15px" }}>
-                            <Label onClick={() => { openModalDetail(exnessId) }} style={{ cursor: "pointer" }} color={("info")}>{"Cập nhật"}</Label>
+                          <Stack direction="row" alignItems="center" spacing={2} style={{ marginLeft: '15px' }}>
+                            <Label
+                              onClick={() => {
+                                openModalDetail(exnessId);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              color={'info'}
+                            >
+                              {'Cập nhật'}
+                            </Label>
                           </Stack>
                         </TableCell>
                       </TableRow>
@@ -343,7 +348,12 @@ export default function ExnessPage() {
                     </TableRow>
                   )}
                 </TableBody>
-                <ModalDetail className="abc" isOpen={isModalDetailOpen} onClose={closeModalDetail} exness={currentExness} />
+                <ModalDetail
+                  className="abc"
+                  isOpen={isModalDetailOpen}
+                  onClose={closeModalDetail}
+                  exness={currentExness}
+                />
                 {isNotFound && (
                   <TableBody>
                     <TableRow>

@@ -5,10 +5,21 @@ import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 import Swal from 'sweetalert2';
 import { alpha, useTheme } from '@mui/material/styles';
-import { format } from "date-fns";
+import { format } from 'date-fns';
 
 // @mui
-import { Grid, Container, Typography, MenuItem, Popover, Card, CardHeader, Box, TextField, Button } from '@mui/material';
+import {
+  Grid,
+  Container,
+  Typography,
+  MenuItem,
+  Popover,
+  Card,
+  CardHeader,
+  Box,
+  TextField,
+  Button,
+} from '@mui/material';
 
 // components
 import ReactApexChart from 'react-apexcharts';
@@ -17,17 +28,10 @@ import { fCurrency, fNumber, fShortenNumber } from '../utils/formatNumber';
 import Iconify from '../components/iconify';
 // components
 import { useChart } from '../components/chart';
-import { prod, dev } from "../utils/env";
-
-
+import { prod, dev } from '../utils/env';
 
 // sections
-import {
-  AppNewsUpdate,
-  AppNewsUpdate2,
-  AppWidgetSummary,
-  AppWidgetSummaryUSD,
-} from '../sections/@dashboard/app';
+import { AppNewsUpdate, AppNewsUpdate2, AppWidgetSummary, AppWidgetSummaryUSD } from '../sections/@dashboard/app';
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +62,7 @@ const handleInitMonth = () => {
   }
 
   return recentMonths;
-}
+};
 
 const convertToDate = (timeunix) => {
   // Tạo một đối tượng Date từ Unix timestamp
@@ -89,55 +93,58 @@ export default function DashboardAppPage() {
   const navigate = useNavigate();
   const theme = useTheme();
   const [balances, setBalances] = useState([]);
-  const [balance, setBalance] = useState(0.00);
-  const [commission, setCommission] = useState(0.00);
+  const [balance, setBalance] = useState(0.0);
+  const [commission, setCommission] = useState(0.0);
   const [isLoading, setIsLoading] = useState(false);
   const [listMenu] = useState(handleInitMonth());
   const [currentMonth, setCurrentMonth] = useState(listMenu[0]);
   const [listExness, setListExness] = useState([]);
-  const [currentExness, setCurrentExness] = useState("");
+  const [currentExness, setCurrentExness] = useState('');
   const [label, setLabel] = useState([]);
   const [commissionLabel, setCommissionLabel] = useState([]);
   const [profits, setProfits] = useState();
   const [commissions, setCommissions] = useState([]);
   const [listTransaction, setListTransaction] = useState([]);
-  const [currentEmail, setCurrentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
-  const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
-  const [refCode, setRefCode] = useState("");
+  const [currentEmail, setCurrentEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email') : '');
+  const [currentAccessToken] = useState(
+    localStorage.getItem('access_token') ? localStorage.getItem('access_token') : ''
+  );
+  const [refCode, setRefCode] = useState('');
   const [listTransaction2, setListTransaction2] = useState([]);
   const [prevBalance, setPrevBalance] = useState([]);
   const [prevProfit, setPrevProfit] = useState(0.0);
   const [prevDeposit, setPrevDeposit] = useState(0.0);
   const [prevWithdraw, setPrevWithdraw] = useState(0.0);
-  const [isAdmin] = useState(localStorage.getItem("r") === "a");
-  const [isSuperAdmin] = useState(localStorage.getItem("r") === "sa");
-  const [isManager] = useState(localStorage.getItem("r") === "m");
-  const [isUser] = useState(localStorage.getItem("r") === "u");
+  const [isAdmin] = useState(localStorage.getItem('r') === 'a');
+  const [isSuperAdmin] = useState(localStorage.getItem('r') === 'sa');
+  const [isManager] = useState(localStorage.getItem('r') === 'm');
+  const [isUser] = useState(localStorage.getItem('r') === 'u');
   const [totalCommissions, setTotalCommissions] = useState(0.0);
   const [min, setMin] = useState(0.0);
   const [max, setMax] = useState(0.0);
   const [open, setOpen] = useState(null);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(null);
-  const [listTable] = useState([{ table: "Profits" }, { table: "Commissions" }])
+  const [listTable] = useState([{ table: 'Profits' }, { table: 'Commissions' }]);
   const [currentTable, setCurrentTable] = useState(listTable[0].table);
-  const [listExnessFiltered, setListExnessFiltered] = useState([])
+  const [listExnessFiltered, setListExnessFiltered] = useState([]);
   const [isRender, setIsRender] = useState(false);
   const [clearSearchInput, setClearSearchInput] = useState(false);
-  const [info, setInfo] = useState("");
+  const [info, setInfo] = useState('');
 
   useEffect(() => {
-    if (isSuperAdmin || isAdmin && currentEmail !== "root@gmail.com") {
+    if (isSuperAdmin || (isAdmin && currentEmail !== 'root@gmail.com')) {
       const config = {
         method: 'get',
         maxBodyLength: Infinity,
         url: `${prod}/api/v1/secured/get-total-commission/${currentEmail}`,
         headers: {
-          'Authorization': `Bearer ${currentAccessToken}`
-        }
+          Authorization: `Bearer ${currentAccessToken}`,
+        },
       };
 
-      axios.request(config)
+      axios
+        .request(config)
         .then((response) => {
           setTotalCommissions(response.data);
         })
@@ -169,7 +176,7 @@ export default function DashboardAppPage() {
   };
 
   const handleChangeExness = (exness, fullname) => {
-    if (exness === "Chọn Exness ID") {
+    if (exness === 'Chọn Exness ID') {
       handleClose2();
       return;
     }
@@ -180,23 +187,29 @@ export default function DashboardAppPage() {
     const unixTimeStamp = Math.floor(currentDate.getTime() / 1000);
     setCurrentExness(exness);
     setInfo(`${exness} - ${fullname}`);
-    fetchData(exness, unixTimeStamp - (86400 * 7), unixTimeStamp);
+    fetchData(exness, unixTimeStamp - 86400 * 7, unixTimeStamp);
     fetchPrev(exness);
     setClearSearchInput(false);
     handleClose2();
-  }
+  };
 
   useEffect(() => {
     setIsLoading(true);
-    const urlConverted = `${prod}/api/v1/secured/get-exness-pixiu/${encodeURI(localStorage.getItem("r") === "a" || localStorage.getItem("r") === "sa" ? "all" : localStorage.getItem("r") === "m" ? `m-${currentEmail}` : currentEmail)}/${currentEmail}`;
+    const urlConverted = `${prod}/api/v1/secured/get-exness-pixiu/${encodeURI(
+      localStorage.getItem('r') === 'a' || localStorage.getItem('r') === 'sa'
+        ? 'all'
+        : localStorage.getItem('r') === 'm'
+        ? `m-${currentEmail}`
+        : currentEmail
+    )}/${currentEmail}`;
 
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
       url: urlConverted,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
 
     axios(config)
@@ -204,81 +217,61 @@ export default function DashboardAppPage() {
         setListExness(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
 
     const timeout = setTimeout(() => {
       setIsLoading(false);
     }, 500);
 
-    return (() => {
+    return () => {
       clearTimeout(timeout);
-    })
+    };
   }, []);
 
   useEffect(() => {
-    let urlConvert = "";
+    let urlConvert = '';
     if (isSuperAdmin || isAdmin) {
-      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${"all"}`
+      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${'all'}`;
     } else {
-      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${currentEmail}`
+      urlConvert = `${prod}/api/v1/secured/get-transaction/email=${currentEmail}`;
     }
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
       url: urlConvert,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         const firstFiveItems = response.data.slice(0, 5);
         setListTransaction(firstFiveItems);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
-
   }, []);
 
   useEffect(() => {
@@ -291,11 +284,12 @@ export default function DashboardAppPage() {
       maxBodyLength: Infinity,
       url: `${prod}/api/v1/secured/get-prev-data/${exness}`,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         setPrevBalance(response.data.balance / 100);
         setPrevProfit(response.data.profit / 100);
@@ -303,43 +297,32 @@ export default function DashboardAppPage() {
         setPrevWithdraw(response.data.withdraw / 100);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
-
-  }
+  };
 
   const timPhanTuLonNhat = (arr) => {
     if (arr.length === 0) {
       return null; // Trường hợp mảng rỗng
     }
     return arr.reduce((max, current) => (current.amount > max.amount ? current : max), arr[0]);
-  }
+  };
 
   const timPhanTuNhoNhat = (arr) => {
     if (arr.length === 0) {
       return null; // Trường hợp mảng rỗng
     }
     return arr.reduce((min, current) => (current.amount < min.amount ? current : min), arr[0]);
-  }
+  };
 
   const fetchData = (exness, timeFrom, timeTo) => {
     // const [month, year] = time.split('/');
@@ -363,7 +346,7 @@ export default function DashboardAppPage() {
 
     const encodedFrom = encodeURIComponent(timeFrom);
     const encodedTo = encodeURIComponent(timeTo);
-    let urlConverted = "";
+    let urlConverted = '';
     if (isAdmin) {
       urlConverted = `${prod}/api/v1/secured/get-info-by-exness-time-range-admin/exness=${exness}&from=${encodedFrom}&to=${encodedTo}`;
     } else if (isManager) {
@@ -376,10 +359,9 @@ export default function DashboardAppPage() {
       maxBodyLength: Infinity,
       url: urlConverted,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
-
 
     axios(config)
       .then((response) => {
@@ -392,7 +374,7 @@ export default function DashboardAppPage() {
         const timeMap = {};
 
         // Lặp qua mảng dữ liệu và tính tổng số lượng dựa trên thời gian
-        dataProfits.forEach(item => {
+        dataProfits.forEach((item) => {
           const { time, amount } = item;
           if (timeMap[time] === undefined) {
             timeMap[time] = 0;
@@ -400,11 +382,10 @@ export default function DashboardAppPage() {
           timeMap[time] += amount / 100;
         });
 
-
         // Chuyển đổi đối tượng thành một mảng kết quả
-        const result = Object.keys(timeMap).map(time => ({
+        const result = Object.keys(timeMap).map((time) => ({
           time: parseInt(time, 10),
-          amount: timeMap[time]
+          amount: timeMap[time],
         }));
 
         setLabel(result.map((profit) => convertToDate(profit.time)));
@@ -416,7 +397,7 @@ export default function DashboardAppPage() {
         const timeMapBalances = {};
 
         // Lặp qua mảng dữ liệu và tính tổng số lượng dựa trên thời gian
-        dataBalances.forEach(item => {
+        dataBalances.forEach((item) => {
           const { time, amount } = item;
           if (timeMapBalances[time] === undefined) {
             timeMapBalances[time] = 0;
@@ -424,25 +405,24 @@ export default function DashboardAppPage() {
           timeMapBalances[time] += amount / 100;
         });
 
-
         // Chuyển đổi đối tượng thành một mảng kết quả
-        const resultBalances = Object.keys(timeMapBalances).map(time => ({
+        const resultBalances = Object.keys(timeMapBalances).map((time) => ({
           time: parseInt(time, 10),
-          amount: timeMapBalances[time]
+          amount: timeMapBalances[time],
         }));
 
         setMax(timPhanTuLonNhat(resultBalances).amount);
         setMin(timPhanTuNhoNhat(resultBalances).amount);
         setBalances(resultBalances.map((profit) => profit.amount));
 
-        // 
+        //
         const dataHistories = response.data.commissions.map((history) => history);
 
         // Tạo một đối tượng để lưu trữ tổng số lượng dựa trên thời gian
         const timeMapHistories = {};
 
         // Lặp qua mảng dữ liệu và tính tổng số lượng dựa trên thời gian
-        dataHistories.forEach(item => {
+        dataHistories.forEach((item) => {
           const { time, amount } = item;
           if (timeMapHistories[time] === undefined) {
             timeMapHistories[time] = 0;
@@ -450,12 +430,10 @@ export default function DashboardAppPage() {
           timeMapHistories[time] += amount;
         });
 
-
         // Chuyển đổi đối tượng thành một mảng kết quả
-        const resultHistories = Object.keys(timeMapHistories).map(time => ({
+        const resultHistories = Object.keys(timeMapHistories).map((time) => ({
           time: parseInt(time, 10),
-          amount: timeMapHistories[time]
-
+          amount: timeMapHistories[time],
         }));
 
         setCommissionLabel(resultHistories.map((history) => convertToDate(history.time)));
@@ -464,7 +442,7 @@ export default function DashboardAppPage() {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   const chartData = [
     {
@@ -495,7 +473,7 @@ export default function DashboardAppPage() {
     fill: {
       type: 'solid',
     },
-    colors: ["#27cf5c", "#1d7fc4"],
+    colors: ['#27cf5c', '#1d7fc4'],
     labels: label,
     xaxis: { type: 'text' },
     yaxis: [
@@ -506,8 +484,8 @@ export default function DashboardAppPage() {
         },
         tickAmount: 5,
         labels: {
-          "formatter": function (value) {
-            if (typeof value === "undefined" || value === 5e-324) {
+          formatter: function (value) {
+            if (typeof value === 'undefined' || value === 5e-324) {
               return 0; // Hoặc giá trị mặc định khác tùy ý
             }
             return fShortenNumber(value);
@@ -524,8 +502,8 @@ export default function DashboardAppPage() {
         max: max + max * 0.1,
         min: min - min * 0.1,
         labels: {
-          "formatter": function (value) {
-            if (typeof value === "undefined" || value === 5e-324) {
+          formatter: function (value) {
+            if (typeof value === 'undefined' || value === 5e-324) {
               return 0; // Hoặc giá trị mặc định khác tùy ý
             }
             return fShortenNumber(value);
@@ -558,16 +536,16 @@ export default function DashboardAppPage() {
     },
     gradient: {
       shade: 'dark',
-      type: "horizontal",
+      type: 'horizontal',
       shadeIntensity: 0.5,
       gradientToColors: undefined, // optional, if not defined - uses the shades of same color in series
       inverseColors: true,
       opacityFrom: 1,
       opacityTo: 1,
       stops: [0, 50, 100],
-      colorStops: []
+      colorStops: [],
     },
-    colors: ["#ff3273"],
+    colors: ['#ff3273'],
     labels: commissionLabel,
     xaxis: { type: 'text' },
     yaxis: [
@@ -577,7 +555,7 @@ export default function DashboardAppPage() {
           text: 'Commissions',
         },
         labels: {
-          "formatter": function (value) {
+          formatter: function (value) {
             return fShortenNumber(value); // Định dạng số nguyên
           },
         },
@@ -602,10 +580,10 @@ export default function DashboardAppPage() {
     },
   });
 
-  const [startDay, setStartDay] = useState('')
-  const [endDay, setEndDay] = useState('')
-  const [startDayUnix, setStartDayUnix] = useState(0)
-  const [endDayUnix, setEndDayUnix] = useState(0)
+  const [startDay, setStartDay] = useState('');
+  const [endDay, setEndDay] = useState('');
+  const [startDayUnix, setStartDayUnix] = useState(0);
+  const [endDayUnix, setEndDayUnix] = useState(0);
 
   useEffect(() => {
     const currentDate = new Date();
@@ -613,9 +591,9 @@ export default function DashboardAppPage() {
 
     // Lấy giá trị Unix timestamp
     const unixTimeStamp = Math.floor(currentDate.getTime() / 1000);
-    setStartDayUnix(unixTimeStamp - (86400 * 7));
+    setStartDayUnix(unixTimeStamp - 86400 * 7);
     setEndDayUnix(unixTimeStamp);
-    setStartDay(convertToDateTime(unixTimeStamp - (86400 * 7)))
+    setStartDay(convertToDateTime(unixTimeStamp - 86400 * 7));
     setEndDay(convertToDateTime(unixTimeStamp));
   }, []);
 
@@ -628,88 +606,90 @@ export default function DashboardAppPage() {
   };
 
   const handleDatePicked = (time) => {
-    if (currentExness !== "Chọn Exness ID") {
-      fetchData(currentExness, (time.startDate.getTime() / 1000), time.endDate.getTime() / 1000);
+    if (currentExness !== 'Chọn Exness ID') {
+      fetchData(currentExness, time.startDate.getTime() / 1000, time.endDate.getTime() / 1000);
     }
     setIsRender(!true);
-  }
+  };
 
   const handleSearch = (keyword) => {
     const result = listExness.filter((item) => item.exnessId.includes(keyword));
     setListExnessFiltered(result);
     setOpen2(!!keyword);
-  }
+  };
 
   return (
     <>
       <Helmet>
         <title> Dashboard </title>
-        <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
+        <link rel="icon" type="image/x-icon" href="/assets/logo.svg" />
       </Helmet>
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
           Dashboard
         </Typography>
-        {isSuperAdmin || isAdmin || isManager ?
-          <Grid style={{ marginBottom: "16px" }} item xs={12} sm={12} md={12} >
+        {isSuperAdmin || isAdmin || isManager ? (
+          <Grid style={{ marginBottom: '16px' }} item xs={12} sm={12} md={12}>
             <input
               type="text"
               onChange={(e) => handleSearch(e.target.value)}
-              placeholder={"Nhập Exness ID"}
+              placeholder={'Nhập Exness ID'}
               className="button-30"
-              style={{ width: "350px" }}
+              style={{ width: '350px' }}
             />
-            <span className='search-section'>
+            <span className="search-section">
               <input
                 type="text"
-                disabled value={info}
+                disabled
+                value={info}
                 placeholder="Chưa chọn Exness ID"
                 className="button-30"
-                style={{ width: "350px" }}
+                style={{ width: '350px' }}
               />
             </span>
 
             <div
-              id='exness-searchbar'
+              id="exness-searchbar"
               open={open2}
               style={{
                 display: open2 ? 'block' : 'none',
-                position: "absolute",
-                minWidth: "300px",
+                position: 'absolute',
+                minWidth: '300px',
                 zIndex: 2,
-                backgroundColor: "white",
-                border: "1px solid #ccc",
-                boxShadow: "2px 2px 2px #ccc",
-                maxHeight: "180px",
-                overflowY: "scroll"
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                boxShadow: '2px 2px 2px #ccc',
+                maxHeight: '180px',
+                overflowY: 'scroll',
               }}
             >
               {listExnessFiltered?.map((item, index) => {
-
-                return <MenuItem key={index} onClick={() => { handleChangeExness(item.exnessId, item.fullname) }}>
-                  <Iconify sx={{ mr: 2 }} />
-                  {item.exnessId} - {item.fullname}
-                </MenuItem>
+                return (
+                  <MenuItem
+                    key={index}
+                    onClick={() => {
+                      handleChangeExness(item.exnessId, item.fullname);
+                    }}
+                  >
+                    <Iconify sx={{ mr: 2 }} />
+                    {item.exnessId} - {item.fullname}
+                  </MenuItem>
+                );
               })}
             </div>
           </Grid>
-          :
-          <Grid item xs={12} sm={12} md={12} >
-            <input
-              type="text"
-              onClick={handleOpen2}
-              placeholder="Chọn Exness ID"
-              className="button-30"
-              readOnly
-            />
-            <span className='search-section'>
+        ) : (
+          <Grid item xs={12} sm={12} md={12}>
+            <input type="text" onClick={handleOpen2} placeholder="Chọn Exness ID" className="button-30" readOnly />
+            <span className="search-section">
               <input
                 type="text"
-                disabled value={info}
+                disabled
+                value={info}
                 placeholder="Chưa chọn Exness ID"
                 className="button-30"
-                style={{ width: "350px" }}
+                style={{ width: '350px' }}
               />
             </span>
             <Popover
@@ -722,7 +702,7 @@ export default function DashboardAppPage() {
                 sx: {
                   p: 1,
                   width: 240,
-                  marginTop: "40px",
+                  marginTop: '40px',
                   '& .MuiMenuItem-root': {
                     px: 1,
                     typography: 'body2',
@@ -732,35 +712,54 @@ export default function DashboardAppPage() {
               }}
             >
               {listExness.map((item, index) => {
-                return <MenuItem key={index} onClick={() => { handleChangeExness(item.exnessId, item.fullname) }}>
-                  <Iconify sx={{ mr: 2 }} />
-                  {item.exnessId} - {item.fullname}
-                </MenuItem>
+                return (
+                  <MenuItem
+                    key={index}
+                    onClick={() => {
+                      handleChangeExness(item.exnessId, item.fullname);
+                    }}
+                  >
+                    <Iconify sx={{ mr: 2 }} />
+                    {item.exnessId} - {item.fullname}
+                  </MenuItem>
+                );
               })}
             </Popover>
           </Grid>
-        }
+        )}
         <Grid container spacing={3}>
           {isSuperAdmin || isAdmin ? (
             <>
-              <Grid item xs={12} md={12} lg={6} >
+              <Grid item xs={12} md={12} lg={6}>
                 <Card>
-                  <div className='day-section'>
-                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={startDay} />
+                  <div className="day-section">
+                    <input
+                      style={{ padding: '4px', fontWeight: '500', textAlign: 'center' }}
+                      disabled
+                      value={startDay}
+                    />
                     <span> - </span>
-                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={endDay} />
+                    <input style={{ padding: '4px', fontWeight: '500', textAlign: 'center' }} disabled value={endDay} />
                   </div>
 
-                  <div className='btn-wrap'>
-                    <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
-                    <Button style={{ marginLeft: "12px" }} className="button-30" onClick={() => {
-                      setIsRender(!isRender)
-                    }}>
+                  <div className="btn-wrap">
+                    <Button variant="text" className="button-30" onClick={handleOpen3}>
+                      {currentTable}
+                    </Button>
+                    <Button
+                      style={{ marginLeft: '12px' }}
+                      className="button-30"
+                      onClick={() => {
+                        setIsRender(!isRender);
+                      }}
+                    >
                       Chọn ngày
                     </Button>
                   </div>
-                  <div className='calendar-wrapper' style={{ position: 'absolute', zIndex: '50' }}>
-                    {isRender && <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />}
+                  <div className="calendar-wrapper" style={{ position: 'absolute', zIndex: '50' }}>
+                    {isRender && (
+                      <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />
+                    )}
                   </div>
 
                   <Popover
@@ -773,7 +772,7 @@ export default function DashboardAppPage() {
                       sx: {
                         p: 1,
                         width: 240,
-                        marginTop: "40px",
+                        marginTop: '40px',
                         '& .MuiMenuItem-root': {
                           px: 1,
                           typography: 'body2',
@@ -783,120 +782,231 @@ export default function DashboardAppPage() {
                     }}
                   >
                     {listTable.map((item, index) => {
-                      return <MenuItem key={index} onClick={() => { handleChangeTable(item.table) }}>
-                        <Iconify sx={{ mr: 2 }} />
-                        {item.table}
-                      </MenuItem>
+                      return (
+                        <MenuItem
+                          key={index}
+                          onClick={() => {
+                            handleChangeTable(item.table);
+                          }}
+                        >
+                          <Iconify sx={{ mr: 2 }} />
+                          {item.table}
+                        </MenuItem>
+                      );
                     })}
                   </Popover>
                   <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-
-                    {currentTable === "Profits" ?
+                    {currentTable === 'Profits' ? (
                       <ReactApexChart id="chart" type="line" series={chartData} options={chartOptions} height={364} />
-                      :
+                    ) : (
                       <ReactApexChart id="chart" type="line" series={chartData2} options={chartOptions2} height={364} />
-                    }
+                    )}
                   </Box>
                 </Card>
               </Grid>
 
               <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD classColor={"commission-background"} className="commission-section" sx={{ mb: 2 }} title="Total Commissions" total={commission} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD classColor={"deposit-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD
+                  classColor={'commission-background'}
+                  className="balance-section"
+                  sx={{ mb: 2 }}
+                  title="Balance"
+                  total={balance}
+                  color="info"
+                  icon={'mi:layers'}
+                />
+                <AppWidgetSummaryUSD
+                  classColor={'commission-background'}
+                  className="commission-section"
+                  sx={{ mb: 2 }}
+                  title="Total Commissions"
+                  total={commission}
+                  color="info"
+                  icon={'mi:layers'}
+                />
+                <AppWidgetSummaryUSD
+                  classColor={'deposit-background'}
+                  className="deposit-section"
+                  sx={{ mb: 2 }}
+                  title="Total Deposits"
+                  total={prevDeposit}
+                  color="info"
+                  icon={'mi:layers'}
+                />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
-                <AppWidgetSummary className="withdraw-section" sx={{ mb: 2 }} title="Total Withdraws" total={prevWithdraw} icon={'iconoir:coins-swap'} />
+                <AppWidgetSummary
+                  className="total-commission commission-section"
+                  sx={{ mb: 2 }}
+                  title="Total Profilts"
+                  total={prevProfit}
+                  icon={'iconoir:coins-swap'}
+                />
+                <AppWidgetSummary
+                  className="withdraw-section"
+                  sx={{ mb: 2 }}
+                  title="Total Withdraws"
+                  total={prevWithdraw}
+                  icon={'iconoir:coins-swap'}
+                />
               </Grid>
-            </>) : isManager ? (<>
-              <Grid item xs={12} md={12} lg={6} >
-                <Card>
-                  <div className='day-section'>
-                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={startDay} />
-                    <span> - </span>
-                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={endDay} />
-                  </div>
-
-                  <div className='btn-wrap'>
-                    <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
-                    <Button style={{ marginLeft: "12px" }} className="button-30" onClick={() => {
-                      setIsRender(!isRender)
-                    }}>
-                      Chọn ngày
-                    </Button>
-                  </div>
-                  <div className='calendar-wrapper' style={{ position: 'absolute', zIndex: '50' }}>
-                    {isRender && <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />}
-                  </div>
-
-                  <Popover
-                    open={Boolean(open3)}
-                    anchorEl={open3}
-                    onClose={handleClose3}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                    transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-                    PaperProps={{
-                      sx: {
-                        p: 1,
-                        width: 240,
-                        marginTop: "40px",
-                        '& .MuiMenuItem-root': {
-                          px: 1,
-                          typography: 'body2',
-                          borderRadius: 0.75,
-                        },
-                      },
-                    }}
-                  >
-                    {listTable.map((item, index) => {
-                      return <MenuItem key={index} onClick={() => { handleChangeTable(item.table) }}>
-                        <Iconify sx={{ mr: 2 }} />
-                        {item.table}
-                      </MenuItem>
-                    })}
-                  </Popover>
-                  <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-
-                    {currentTable === "Profits" ?
-                      <ReactApexChart id="chart" type="line" series={chartData} options={chartOptions} height={364} />
-                      :
-                      <ReactApexChart id="chart" type="line" series={chartData2} options={chartOptions2} height={364} />
-                    }
-                  </Box>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD classColor={"commission-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD classColor={"commission-background"} className="commission-section" sx={{ mb: 2 }} title="Total Commission" total={commission} color="info" icon={'mi:layers'} />
-              </Grid>
-
-              <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
-                <AppWidgetSummary className="withdraw-section" sx={{ mb: 2 }} title="Total Withdraws" total={prevWithdraw} icon={'iconoir:coins-swap'} />
-              </Grid>
-            </>) : (
+            </>
+          ) : isManager ? (
             <>
-              <Grid item xs={12} md={12} lg={6} >
+              <Grid item xs={12} md={12} lg={6}>
                 <Card>
-                  <div className='day-section'>
-                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={startDay} />
+                  <div className="day-section">
+                    <input
+                      style={{ padding: '4px', fontWeight: '500', textAlign: 'center' }}
+                      disabled
+                      value={startDay}
+                    />
                     <span> - </span>
-                    <input style={{ padding: "4px", fontWeight: "500", textAlign: "center" }} disabled value={endDay} />
+                    <input style={{ padding: '4px', fontWeight: '500', textAlign: 'center' }} disabled value={endDay} />
                   </div>
 
-                  <div className='btn-wrap'>
-                    <Button variant="text" className="button-30" onClick={handleOpen3}>{currentTable}</Button>
-                    <Button style={{ marginLeft: "12px" }} className="button-30" onClick={() => {
-                      setIsRender(!isRender)
-                    }}>
+                  <div className="btn-wrap">
+                    <Button variant="text" className="button-30" onClick={handleOpen3}>
+                      {currentTable}
+                    </Button>
+                    <Button
+                      style={{ marginLeft: '12px' }}
+                      className="button-30"
+                      onClick={() => {
+                        setIsRender(!isRender);
+                      }}
+                    >
                       Chọn ngày
                     </Button>
                   </div>
-                  <div className='calendar-wrapper' style={{ position: 'absolute', zIndex: '50' }}>
-                    {isRender && <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />}
+                  <div className="calendar-wrapper" style={{ position: 'absolute', zIndex: '50' }}>
+                    {isRender && (
+                      <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />
+                    )}
+                  </div>
+
+                  <Popover
+                    open={Boolean(open3)}
+                    anchorEl={open3}
+                    onClose={handleClose3}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    PaperProps={{
+                      sx: {
+                        p: 1,
+                        width: 240,
+                        marginTop: '40px',
+                        '& .MuiMenuItem-root': {
+                          px: 1,
+                          typography: 'body2',
+                          borderRadius: 0.75,
+                        },
+                      },
+                    }}
+                  >
+                    {listTable.map((item, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          onClick={() => {
+                            handleChangeTable(item.table);
+                          }}
+                        >
+                          <Iconify sx={{ mr: 2 }} />
+                          {item.table}
+                        </MenuItem>
+                      );
+                    })}
+                  </Popover>
+                  <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+                    {currentTable === 'Profits' ? (
+                      <ReactApexChart id="chart" type="line" series={chartData} options={chartOptions} height={364} />
+                    ) : (
+                      <ReactApexChart id="chart" type="line" series={chartData2} options={chartOptions2} height={364} />
+                    )}
+                  </Box>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3}>
+                <AppWidgetSummaryUSD
+                  classColor={'commission-background'}
+                  className="balance-section"
+                  sx={{ mb: 2 }}
+                  title="Balance"
+                  total={balance}
+                  color="info"
+                  icon={'mi:layers'}
+                />
+                <AppWidgetSummaryUSD
+                  classColor={'commission-background'}
+                  className="deposit-section"
+                  sx={{ mb: 2 }}
+                  title="Total Deposits"
+                  total={prevDeposit}
+                  color="info"
+                  icon={'mi:layers'}
+                />
+                <AppWidgetSummaryUSD
+                  classColor={'commission-background'}
+                  className="commission-section"
+                  sx={{ mb: 2 }}
+                  title="Total Commission"
+                  total={commission}
+                  color="info"
+                  icon={'mi:layers'}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3}>
+                <AppWidgetSummary
+                  className="total-commission commission-section"
+                  sx={{ mb: 2 }}
+                  title="Total Profilts"
+                  total={prevProfit}
+                  icon={'iconoir:coins-swap'}
+                />
+                <AppWidgetSummary
+                  className="withdraw-section"
+                  sx={{ mb: 2 }}
+                  title="Total Withdraws"
+                  total={prevWithdraw}
+                  icon={'iconoir:coins-swap'}
+                />
+              </Grid>
+            </>
+          ) : (
+            <>
+              <Grid item xs={12} md={12} lg={6}>
+                <Card>
+                  <div className="day-section">
+                    <input
+                      style={{ padding: '4px', fontWeight: '500', textAlign: 'center' }}
+                      disabled
+                      value={startDay}
+                    />
+                    <span> - </span>
+                    <input style={{ padding: '4px', fontWeight: '500', textAlign: 'center' }} disabled value={endDay} />
+                  </div>
+
+                  <div className="btn-wrap">
+                    <Button variant="text" className="button-30" onClick={handleOpen3}>
+                      {currentTable}
+                    </Button>
+                    <Button
+                      style={{ marginLeft: '12px' }}
+                      className="button-30"
+                      onClick={() => {
+                        setIsRender(!isRender);
+                      }}
+                    >
+                      Chọn ngày
+                    </Button>
+                  </div>
+                  <div className="calendar-wrapper" style={{ position: 'absolute', zIndex: '50' }}>
+                    {isRender && (
+                      <DateRangeComponents handleDatePicker={handleDatePicker} handleDatePicked={handleDatePicked} />
+                    )}
                   </div>
                   <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                     <ReactApexChart id="chart" type="line" series={chartData} options={chartOptions} height={364} />
@@ -905,28 +1015,56 @@ export default function DashboardAppPage() {
               </Grid>
 
               <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummaryUSD classColor={"commission-background"} className="balance-section" sx={{ mb: 2 }} title="Balance" total={balance} color="info" icon={'mi:layers'} />
-                <AppWidgetSummaryUSD classColor={"commission-background"} className="deposit-section" sx={{ mb: 2 }} title="Total Deposits" total={prevDeposit} color="info" icon={'mi:layers'} />
+                <AppWidgetSummaryUSD
+                  classColor={'commission-background'}
+                  className="balance-section"
+                  sx={{ mb: 2 }}
+                  title="Balance"
+                  total={balance}
+                  color="info"
+                  icon={'mi:layers'}
+                />
+                <AppWidgetSummaryUSD
+                  classColor={'commission-background'}
+                  className="deposit-section"
+                  sx={{ mb: 2 }}
+                  title="Total Deposits"
+                  total={prevDeposit}
+                  color="info"
+                  icon={'mi:layers'}
+                />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummary className="total-commission commission-section" sx={{ mb: 2 }} title="Total Profilts" total={prevProfit} icon={'iconoir:coins-swap'} />
-                <AppWidgetSummary className="withdraw-section" sx={{ mb: 2 }} title="Total Withdraws" total={prevWithdraw} icon={'iconoir:coins-swap'} />
+                <AppWidgetSummary
+                  className="total-commission commission-section"
+                  sx={{ mb: 2 }}
+                  title="Total Profilts"
+                  total={prevProfit}
+                  icon={'iconoir:coins-swap'}
+                />
+                <AppWidgetSummary
+                  className="withdraw-section"
+                  sx={{ mb: 2 }}
+                  title="Total Withdraws"
+                  total={prevWithdraw}
+                  icon={'iconoir:coins-swap'}
+                />
               </Grid>
             </>
           )}
 
-          {isSuperAdmin || isAdmin && <Grid item xs={12} md={12} lg={12}>
-            <AppNewsUpdate2 />
-          </Grid>}
+          {isSuperAdmin ||
+            (isAdmin && (
+              <Grid item xs={12} md={12} lg={12}>
+                <AppNewsUpdate2 />
+              </Grid>
+            ))}
 
           <Grid item xs={12} md={12} lg={12}>
-            <AppNewsUpdate
-              title="Danh sách giao dịch"
-              list={listTransaction}
-            />
+            <AppNewsUpdate title="Danh sách giao dịch" list={listTransaction} />
           </Grid>
         </Grid>
-      </Container >
+      </Container>
     </>
   );
 }

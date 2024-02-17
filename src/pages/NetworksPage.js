@@ -8,7 +8,7 @@ import { Container, Stack, Typography } from '@mui/material';
 import Swal from 'sweetalert2';
 import { faker } from '@faker-js/faker';
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
-import { prod, dev } from "../utils/env";
+import { prod, dev } from '../utils/env';
 // mock
 // ----------------------------------------------------------------------
 
@@ -16,9 +16,11 @@ export default function NetworksPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState([]);
-  const [currentRoot, setCurrentRoot] = useState(localStorage.getItem("email"));
-  const [currentEmail] = useState(localStorage.getItem("email") ? localStorage.getItem("email") : "");
-  const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
+  const [currentRoot, setCurrentRoot] = useState(localStorage.getItem('email'));
+  const [currentEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email') : '');
+  const [currentAccessToken] = useState(
+    localStorage.getItem('access_token') ? localStorage.getItem('access_token') : ''
+  );
   const [prevRoot, setPrevRoot] = useState([]);
 
   const handleProductClick = (email, prev) => {
@@ -32,7 +34,7 @@ export default function NetworksPage() {
     }
     const cur = prevRoot.pop();
     setCurrentRoot(cur);
-  }
+  };
 
   const fetchNetwork = (email) => {
     const config = {
@@ -40,36 +42,27 @@ export default function NetworksPage() {
       maxBodyLength: Infinity,
       url: `${prod}/api/v1/secured/getNetwork/${email}`,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         setProduct([...response.data]);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
-  }
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -80,17 +73,16 @@ export default function NetworksPage() {
       setIsLoading(false);
     }, 500);
 
-    return (() => {
+    return () => {
       clearTimeout(timeout);
-    })
+    };
   }, [currentRoot]);
 
   return (
     <>
       <Helmet>
         <title> Network </title>
-        <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
-
+        <link rel="icon" type="image/x-icon" href="/assets/logo.svg" />
       </Helmet>
 
       <Container>

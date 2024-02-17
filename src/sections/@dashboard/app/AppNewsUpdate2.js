@@ -25,7 +25,7 @@ import {
   TableContainer,
   TablePagination,
   CardHeader,
-  Divider
+  Divider,
 } from '@mui/material';
 // components
 
@@ -36,7 +36,7 @@ import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../user';
-import { prod, dev } from "../../../utils/env";
+import { prod, dev } from '../../../utils/env';
 // mock
 
 const TABLE_HEAD = [
@@ -82,7 +82,7 @@ function applySortFilter(array, comparator, query) {
 export default function AppNewsUpdate2() {
   return (
     <Card>
-      <CardHeader title={"Danh sách tài khoản"} subheader={""} />
+      <CardHeader title={'Danh sách tài khoản'} subheader={''} />
 
       <Scrollbar>
         <TransactionItem />
@@ -114,46 +114,39 @@ function TransactionItem() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [currentExness, setCurrentExness] = useState("");
+  const [currentExness, setCurrentExness] = useState('');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
-  const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
+  const [currentAccessToken] = useState(
+    localStorage.getItem('access_token') ? localStorage.getItem('access_token') : ''
+  );
 
   useEffect(() => {
     const config = {
       method: 'get',
       url: `${prod}/api/v1/secured/get-all-account`,
       headers: {
-        'Authorization': `Bearer ${currentAccessToken}`
-      }
+        Authorization: `Bearer ${currentAccessToken}`,
+      },
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         setListExness(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: 'Session is ended, please login again !',
+          icon: 'error',
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
   }, []);
 
@@ -180,9 +173,9 @@ function TransactionItem() {
       setIsLoading(false);
     }, 500);
 
-    return (() => {
+    return () => {
       clearTimeout(timeout);
-    })
+    };
   }, []);
 
   const handleOpenMenu = (event) => {
@@ -244,103 +237,121 @@ function TransactionItem() {
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
-      <Card>
-        <UserListToolbar currentChose={selected} numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+    <Card>
+      <UserListToolbar
+        currentChose={selected}
+        numSelected={selected.length}
+        filterName={filterName}
+        onFilterName={handleFilterByName}
+      />
 
-        <Scrollbar>
-          <TableContainer sx={{ minWidth: 800 }}>
-            <Table>
-              <UserListHead
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={listExness.length}
-                numSelected={selected.length}
-                onRequestSort={handleRequestSort}
-                onSelectAllClick={handleSelectAllClick}
-              />
-              <TableBody>
-                {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  const selectedUser = selected.indexOf(row) !== -1;
-                  const { id, email, name, role } = row;
+      <Scrollbar>
+        <TableContainer sx={{ minWidth: 800 }}>
+          <Table>
+            <UserListHead
+              order={order}
+              orderBy={orderBy}
+              headLabel={TABLE_HEAD}
+              rowCount={listExness.length}
+              numSelected={selected.length}
+              onRequestSort={handleRequestSort}
+              onSelectAllClick={handleSelectAllClick}
+            />
+            <TableBody>
+              {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                const selectedUser = selected.indexOf(row) !== -1;
+                const { id, email, name, role } = row;
 
-                  return (
-                    <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                      <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
-                          <Typography variant="subtitle2" noWrap>
-                            {email}
-                          </Typography>
-                        </Stack>
-                      </TableCell>
-
-                      <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
-                          <Typography variant="subtitle2" noWrap>
-                            {name}
-                          </Typography>
-                        </Stack>
-                      </TableCell>
-
-                      <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
-                          <Typography variant="subtitle2" noWrap>
-                            {role === "MANAGER" ? "Leader" : "Nhà Đầu Tư"}
-                          </Typography>
-                        </Stack>
-                      </TableCell>
-
-                      <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2} style={{ margin: "15px" }}>
-                          <Label onClick={() => { openModalDetail(id) }} style={{ cursor: "pointer" }} color={("info")}>{"Cập nhật"}</Label>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: 53 * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-              <ModalDetailRole className="abc" isOpen={isModalDetailOpen} onClose={closeModalDetail} exness={currentExness} />
-              {isNotFound && (
-                <TableBody>
-                  <TableRow>
-                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                      <Paper
-                        sx={{
-                          textAlign: 'center',
-                        }}
-                      >
-                        <Typography variant="h6" paragraph>
-                          Not found
+                return (
+                  <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                    <TableCell component="th" scope="row" padding="none">
+                      <Stack direction="row" alignItems="center" spacing={2} style={{ margin: '15px' }}>
+                        <Typography variant="subtitle2" noWrap>
+                          {email}
                         </Typography>
+                      </Stack>
+                    </TableCell>
 
-                        <Typography variant="body2">
-                          No results found for &nbsp;
-                          <strong>&quot;{filterName}&quot;</strong>.
-                          <br /> Try checking for typos or using complete words.
+                    <TableCell component="th" scope="row" padding="none">
+                      <Stack direction="row" alignItems="center" spacing={2} style={{ margin: '15px' }}>
+                        <Typography variant="subtitle2" noWrap>
+                          {name}
                         </Typography>
-                      </Paper>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell component="th" scope="row" padding="none">
+                      <Stack direction="row" alignItems="center" spacing={2} style={{ margin: '15px' }}>
+                        <Typography variant="subtitle2" noWrap>
+                          {role === 'MANAGER' ? 'Leader' : 'Nhà Đầu Tư'}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell component="th" scope="row" padding="none">
+                      <Stack direction="row" alignItems="center" spacing={2} style={{ margin: '15px' }}>
+                        <Label
+                          onClick={() => {
+                            openModalDetail(id);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          color={'info'}
+                        >
+                          {'Cập nhật'}
+                        </Label>
+                      </Stack>
                     </TableCell>
                   </TableRow>
-                </TableBody>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
               )}
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+            </TableBody>
+            <ModalDetailRole
+              className="abc"
+              isOpen={isModalDetailOpen}
+              onClose={closeModalDetail}
+              exness={currentExness}
+            />
+            {isNotFound && (
+              <TableBody>
+                <TableRow>
+                  <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                    <Paper
+                      sx={{
+                        textAlign: 'center',
+                      }}
+                    >
+                      <Typography variant="h6" paragraph>
+                        Not found
+                      </Typography>
 
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={listExness.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Card>
+                      <Typography variant="body2">
+                        No results found for &nbsp;
+                        <strong>&quot;{filterName}&quot;</strong>.
+                        <br /> Try checking for typos or using complete words.
+                      </Typography>
+                    </Paper>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
+          </Table>
+        </TableContainer>
+      </Scrollbar>
+
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={listExness.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Card>
   );
 }
