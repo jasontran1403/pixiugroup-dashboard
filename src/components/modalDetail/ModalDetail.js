@@ -61,7 +61,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
         })
         .catch(() => {
           Swal.fire({
-            title: 'Session is ended, please login again !',
+            title: 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!',
             icon: 'error',
             timer: 3000,
             position: 'center',
@@ -102,7 +102,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
       })
       .catch(() => {
         Swal.fire({
-          title: 'Session is ended, please login again !',
+          title: 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!',
           icon: 'error',
           timer: 3000,
           position: 'center',
