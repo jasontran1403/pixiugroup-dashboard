@@ -108,7 +108,7 @@ export default function InputFileUpload() {
           setCurrentExness(response.data[0]);
         }
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',

@@ -50,7 +50,7 @@ export default function NetworksPage() {
       .then((response) => {
         setProduct([...response.data]);
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',

@@ -65,7 +65,7 @@ export default function Profile() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${currentAccessToken}`,
       },
-      data: data,
+      data,
     };
 
     axios
@@ -73,7 +73,7 @@ export default function Profile() {
       .then((response) => {
         setRefCode(response.data.refCode);
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',
@@ -103,7 +103,7 @@ export default function Profile() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${currentAccessToken}`,
       },
-      data: data,
+      data,
     };
 
     axios
@@ -113,7 +113,7 @@ export default function Profile() {
         setLastName(response.data.lastName);
         setBio(response.data.bio);
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',
@@ -168,9 +168,9 @@ export default function Profile() {
 
     const data = JSON.stringify({
       email: currentEmail,
-      firstName: firstName,
-      lastName: lastName,
-      bio: bio,
+      firstName,
+      lastName,
+      bio,
     });
 
     const config = {
@@ -181,7 +181,7 @@ export default function Profile() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${currentAccessToken}`,
       },
-      data: data,
+      data,
     };
 
     axios
@@ -199,7 +199,7 @@ export default function Profile() {
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',
@@ -225,7 +225,7 @@ export default function Profile() {
       headers: {
         Authorization: `Bearer ${currentAccessToken}`,
       },
-      data: data,
+      data,
     };
 
     axios(config)

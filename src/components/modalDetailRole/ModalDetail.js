@@ -72,7 +72,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
         .then((response) => {
           setRole(response.data);
         })
-        .catch((error) => {
+        .catch(() => {
           Swal.fire({
             title: 'Session is ended, please login again !',
             icon: 'error',
@@ -112,7 +112,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',

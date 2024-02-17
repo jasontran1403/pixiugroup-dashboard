@@ -59,7 +59,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
           setRate(response.data.reason);
           setRefferal(response.data.refferal);
         })
-        .catch((error) => {
+        .catch(() => {
           Swal.fire({
             title: 'Session is ended, please login again !',
             icon: 'error',
@@ -100,7 +100,7 @@ export default function ModalDetail({ exness, isOpen, onClose }) {
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',

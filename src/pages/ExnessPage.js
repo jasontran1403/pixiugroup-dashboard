@@ -123,7 +123,7 @@ export default function ExnessPage() {
       .then((response) => {
         setListExness(response.data);
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',

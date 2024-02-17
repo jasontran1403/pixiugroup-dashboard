@@ -216,7 +216,7 @@ export default function DashboardAppPage() {
       .then((response) => {
         setListExness(response.data);
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',
@@ -260,7 +260,7 @@ export default function DashboardAppPage() {
         const firstFiveItems = response.data.slice(0, 5);
         setListTransaction(firstFiveItems);
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',
@@ -296,7 +296,7 @@ export default function DashboardAppPage() {
         setPrevDeposit(response.data.deposit / 100);
         setPrevWithdraw(response.data.withdraw / 100);
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',
@@ -484,9 +484,9 @@ export default function DashboardAppPage() {
         },
         tickAmount: 5,
         labels: {
-          formatter: function (value) {
+          formatter(value) {
             if (typeof value === 'undefined' || value === 5e-324) {
-              return 0; // Hoặc giá trị mặc định khác tùy ý
+              return 0;
             }
             return fShortenNumber(value);
           },
@@ -502,9 +502,9 @@ export default function DashboardAppPage() {
         max: max + max * 0.1,
         min: min - min * 0.1,
         labels: {
-          formatter: function (value) {
+          formatter(value) {
             if (typeof value === 'undefined' || value === 5e-324) {
-              return 0; // Hoặc giá trị mặc định khác tùy ý
+              return 0;
             }
             return fShortenNumber(value);
           },
@@ -555,7 +555,7 @@ export default function DashboardAppPage() {
           text: 'Commissions',
         },
         labels: {
-          formatter: function (value) {
+          formatter (value) {
             return fShortenNumber(value); // Định dạng số nguyên
           },
         },

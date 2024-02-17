@@ -128,7 +128,7 @@ export default function TransactionPage() {
       .then((response) => {
         setListTransactions(response.data);
       })
-      .catch((error) => {
+      .catch(() => {
         Swal.fire({
           title: 'Session is ended, please login again !',
           icon: 'error',
