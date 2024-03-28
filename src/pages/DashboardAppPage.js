@@ -212,26 +212,16 @@ export default function DashboardAppPage() {
         }
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: "Lỗi, xin vui lòng đăng nhập lại!",
+          icon: "error",
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
 
     const timeout = setTimeout(() => {
@@ -265,26 +255,16 @@ export default function DashboardAppPage() {
         setListTransaction(firstFiveItems);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: "Lỗi, xin vui lòng đăng nhập lại!",
+          icon: "error",
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
 
   }, []);
@@ -311,26 +291,16 @@ export default function DashboardAppPage() {
         setPrevWithdraw(response.data.withdraw / 100);
       })
       .catch((error) => {
-        if (error.response.status === 403) {
-          Swal.fire({
-            title: "An error occured",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            title: "Session is ended, please login again !",
-            icon: "error",
-            timer: 3000,
-            position: 'center',
-            showConfirmButton: false
-          }).then(() => {
-            localStorage.clear();
-            navigate('/login', { replace: true });
-          });
-        }
+        Swal.fire({
+          title: "Lỗi, xin vui lòng đăng nhập lại!",
+          icon: "error",
+          timer: 3000,
+          position: 'center',
+          showConfirmButton: false
+        }).then(() => {
+          localStorage.clear();
+          navigate('/login', { replace: true });
+        });
       });
 
   }
