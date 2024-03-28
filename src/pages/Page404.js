@@ -22,7 +22,7 @@ export default function Page404() {
   return (
     <>
       <Helmet>
-        <title> 404 Page Not Found | Pixiu - Group </title>
+        <title> 404 Page Not Found | Demo page </title>
         <link rel='icon' type='image/x-icon' href='/assets/logo.svg' />
         
       </Helmet>

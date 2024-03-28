@@ -57,7 +57,7 @@ export default function SignupPage() {
           <StyledContent>
             <div className='auth-form'>
               <Typography variant="h4" gutterBottom>
-                Sign up to Pixiu - Group
+                Sign up to Demo page
               </Typography>
 
               <Typography variant="body2" sx={{ mb: 5 }}>

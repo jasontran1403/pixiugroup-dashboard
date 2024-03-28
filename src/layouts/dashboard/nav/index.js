@@ -15,7 +15,6 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 import { prod } from "../../../utils/env";
 //
-import navConfigManager from './configManager';
 import navConfig from './config';
 
 // ----------------------------------------------------------------------
@@ -44,7 +43,6 @@ export default function Nav({ openNav, onCloseNav }) {
   const [currentAccessToken] = useState(localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "");
   const [refCode, setRefCode] = useState("");
   const isDesktop = useResponsive('up', 'lg');
-  const [isUser] = useState(localStorage.getItem("r") === "u");
 
   useEffect(() => {
    
@@ -78,7 +76,7 @@ export default function Nav({ openNav, onCloseNav }) {
   }, []);
 
   useEffect(() => {
-    if (openNav && isUser) {
+    if (openNav) {
       onCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,12 +108,12 @@ export default function Nav({ openNav, onCloseNav }) {
         </Link>
       </Box>
 
-      {isUser ? <NavSection data={navConfig} /> : <NavSection data={navConfigManager} />}
+      <NavSection data={navConfig} />
       <div className='ref-container'>
                 <h3 className='ref-title' >Refferal code:</h3>
                 <span className='ref-code'> {refCode} </span>
                 <span className='line'/>
-                <div className='ref-footer'> Copyright © by Pixiu - Group </div>
+                <div className='ref-footer'> Copyright © by Demo page </div>
 
               </div>
       <Box sx={{ flexGrow: 1 }} />
@@ -163,6 +161,10 @@ export default function Nav({ openNav, onCloseNav }) {
               width: NAV_WIDTH,
               bgcolor: 'background.default',
               borderRightStyle: 'dashed',
+              border: '0.5px solid rgba(255, 255, 255, 0.164)',
+              background: 'rgba(255, 255, 255, 0.112)',
+              backdropFilter: 'blur(3px)',              
+              
             },
           }}
         >

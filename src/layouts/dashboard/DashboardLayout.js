@@ -15,6 +15,8 @@ const StyledRoot = styled('div')({
   display: 'flex',
   minHeight: '100%',
   overflow: 'hidden',
+  backgroundColor: '#00DBDE',
+  backgroundImage: 'linear-gradient(90deg, #00DBDE 0%, #FC00FF 100%)',
 });
 
 const Main = styled('div')(({ theme }) => ({
@@ -28,6 +30,8 @@ const Main = styled('div')(({ theme }) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
   },
+
+
 }));
 
 // ----------------------------------------------------------------------
@@ -36,7 +40,7 @@ export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
 
   return (
-    <StyledRoot>
+    <StyledRoot >
       <Header onOpenNav={() => setOpen(true)} />
 
       <Nav openNav={open} onCloseNav={() => setOpen(false)} />

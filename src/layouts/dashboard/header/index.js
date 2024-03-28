@@ -21,11 +21,15 @@ const HEADER_MOBILE = 64;
 const HEADER_DESKTOP = 92;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
-  ...bgBlur({ color: theme.palette.background.default }),
+  ...bgBlur({ color: theme.palette.background.defaul }),
   boxShadow: 'none',
   [theme.breakpoints.up('lg')]: {
     width: `calc(100% - ${NAV_WIDTH + 1}px)`,
   },
+  border: '0.5px solid rgba(255, 255, 255, 0.164)',
+  background: 'rgba(255, 255, 255, 0.112)',
+  backdropFilter: 'blur(3px)',
+  height: 'max-content',
 }));
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -44,7 +48,7 @@ Header.propTypes = {
 
 export default function Header({ onOpenNav }) {
   return (
-    <StyledRoot>
+    <StyledRoot >
       <StyledToolbar>
         <IconButton
           onClick={onOpenNav}

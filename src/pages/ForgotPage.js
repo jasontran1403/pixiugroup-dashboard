@@ -61,7 +61,7 @@ export default function ForgotPage() {
           <StyledContent>
             <div className='auth-form'> 
               <Typography variant="h4" gutterBottom>
-                Recovery your password at Pixiu - Group
+                Recovery your password at Demo page
               </Typography>
 
               <Typography variant="body2" sx={{ mb: 5 }}>

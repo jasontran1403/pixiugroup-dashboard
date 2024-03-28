@@ -21,6 +21,11 @@ const navConfig = [
     path: '/transaction',
     icon: icon('ic_transaction'),
   },
+  {
+    title: 'commission',
+    path: '/commission',
+    icon: icon('ic_cart'),
+  }
 ];
 
 

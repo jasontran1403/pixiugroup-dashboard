@@ -86,6 +86,12 @@ export default function LoginForm() {
 
   };
 
+  const handlePressEnterKey = (event) => {
+    if(event.key === "Enter") {
+      handleClick()
+    }
+  }
+
   function isValidEmail(email) {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return emailRegex.test(email);
@@ -100,6 +106,7 @@ export default function LoginForm() {
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          onKeyPress = {handlePressEnterKey}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -112,8 +119,8 @@ export default function LoginForm() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }} >
-        <Link href={"/forgot"} variant="subtitle2" underline="hover" style={{ color: "white" }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+        <Link href={"/forgot"} variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
       </Stack>

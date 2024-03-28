@@ -70,7 +70,7 @@ export default function LoginPage() {
             <div className ="auth-form">
 
             <Typography variant="h4" gutterBottom>
-              Sign in to Pixiu - Group
+              Sign in to Demo page
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
