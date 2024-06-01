@@ -617,7 +617,7 @@ export default function DashboardAppPage() {
           Dashboard
         </Typography>
         <Grid style={{marginBottom: "16px"}} item xs={12} sm={12} md={12} >
-          <input id = "black-text" type="text"  onChange={(e) => handleSearch(e.target.value)} placeholder={"Nhap Exness can tim"}  className="button-30" /> 
+          <input id = "black-text" type="text"  onChange={(e) => handleSearch(e.target.value)} placeholder={"Nhập ID Exness"}  className="button-30" /> 
           <span className='search-section'>
             <input disabled value={currentExness} type="text" className="search-input" /> 
           </span>

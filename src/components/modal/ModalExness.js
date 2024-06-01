@@ -28,6 +28,7 @@ export default function ModalExness({ isOpen, onClose }) {
     const [server, setServer] = useState("");
     const [password, setPassword] = useState("");
     const [passview, setPassview] = useState("");
+    const [teleId, setTeleId] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [reason, setReason] = useState("");
@@ -36,7 +37,7 @@ export default function ModalExness({ isOpen, onClose }) {
 
     const handleSubmit = () => {
         onClose();
-        if (exnessId === "" || server === "" || password === "" || passview === "" || reason === "" || message === "" || refferal === "" || name === "") {
+        if (exnessId === "" || server === "" || password === "" || name === "" || teleId === "") {
             Swal.fire({
                 title: "Vui lòng nhập đủ các thông tin!",
                 icon: "error",
@@ -57,6 +58,7 @@ export default function ModalExness({ isOpen, onClose }) {
             "date" : message,
             "rate": reason,
             "refferal": refferal,
+            "teleId": teleId,
             "type": 1
         });
 
@@ -136,13 +138,13 @@ export default function ModalExness({ isOpen, onClose }) {
                         <TextField onChange={(e) => { setExnessId(e.target.value) }}
                             name="exnessId"
                             value={exnessId}
-                            label="Exness ID"
+                            label="ID Exness"
                             required
                         />
-                        <TextField onChange={(e) => { setName(e.target.value) }}
-                            name="name"
-                            value={name}
-                            label="Tên"
+                        <TextField onChange={(e) => { setPassword(e.target.value) }}
+                            name="password"
+                            value={password}
+                            label="Mật khẩu"
                             required
                         />
                         <TextField onChange={(e) => { setServer(e.target.value) }}
@@ -151,34 +153,22 @@ export default function ModalExness({ isOpen, onClose }) {
                             label="Server"
                             required
                         />
-                        <TextField onChange={(e) => { setPassword(e.target.value) }}
-                            name="password"
-                            value={password}
-                            label="Password"
-                            required
-                        />
-                        <TextField onChange={(e) => { setPassview(e.target.value) }}
-                            name="passview"
-                            value={passview}
-                            label="Passview"
-                            required
-                        />
-                        <TextField onChange={(e) => { setMessage(e.target.value) }}
-                            name="message"
-                            value={message}
-                            label="Ngày bắt đầu"
-                            required
-                        />
-                        <TextField onChange={(e) => { setReason(e.target.value) }}
-                            name="reason"
-                            value={reason}
-                            label="Chỉ số"
+                        <TextField onChange={(e) => { setName(e.target.value) }}
+                            name="name"
+                            value={name}
+                            label="Tên hiển thị"
                             required
                         />
                         <TextField onChange={(e) => { setRefferal(e.target.value) }}
                             name="refferal"
                             value={refferal}
-                            label="ID Exness Người giới thiệu"
+                            label="ID Exness Người giới thiệu, để trống nếu không có"
+                            required
+                        />
+                        <TextField onChange={(e) => { setTeleId(e.target.value) }}
+                            name="teleid"
+                            value={teleId}
+                            label="ID Tele để thông báo cập nhật mới"
                             required
                         />
                         <Button onClick={handleSubmit}>Thêm mới</Button>
