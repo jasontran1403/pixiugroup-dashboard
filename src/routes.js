@@ -29,49 +29,53 @@ export default function Router() {
   const isEmailExists = !!email;
   
   const routes = useRoutes([
-    {
+        {
       path: '/',
-      element: isEmailExists ? <DashboardLayout /> : <Navigate to="/login" />,
-      children: [
-        { element: <Navigate to="/dashboard" />, index: true },
-        { path: 'dashboard', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
-        { path: 'exness', element: <ExnessPage /> },
-        { path: 'profile', element: <Profile /> },
-        // { path: 'withdraw', element: <WithdrawPage /> },
-        { path: '2fa', element: <FAGuard /> },
-        { path: 'shareib', element: <UploadFile /> },
-        { path: 'transaction', element: <TransactionPage /> },
-        { path: 'commission', element: <CommissionPage /> },
-        { path: 'upload', element: <UploadFile /> },
-        { path: 'network', element: <NetworksPage /> },
-        // { path: 'blog', element: <BlogPage /> },
-      ],
-    },
-    {
-      path: 'login',
-      element: isEmailExists ? <Navigate to="/dashboard" /> : <LoginPage />,
-    },
-    {
-      path: 'signup',
-      element: isEmailExists ? <Navigate to="/dashboard" /> : <SignupPage />,
-    },
-    {
-      path: 'forgot',
-      element: isEmailExists ? <Navigate to="/dashboard" /> : <ForgotPage />,
+      element: <ExnessPage />,
     },
     // {
-    //   element: <SimpleLayout />,
+    //   path: '/',
+    //   element: isEmailExists ? <DashboardLayout /> : <Navigate to="/login" />,
     //   children: [
-    //     { element: <Navigate to="/dashboard/app" />, index: true },
-    //     { path: '404', element: <Page404 /> },
-    //     { path: '*', element: <Navigate to="/404" /> },
+    //     { element: <Navigate to="/dashboard" />, index: true },
+    //     { path: 'dashboard', element: <DashboardAppPage /> },
+    //     { path: 'user', element: <UserPage /> },
+    //     { path: 'exness', element: <ExnessPage /> },
+    //     { path: 'profile', element: <Profile /> },
+    //     // { path: 'withdraw', element: <WithdrawPage /> },
+    //     { path: '2fa', element: <FAGuard /> },
+    //     { path: 'shareib', element: <UploadFile /> },
+    //     { path: 'transaction', element: <TransactionPage /> },
+    //     { path: 'commission', element: <CommissionPage /> },
+    //     { path: 'upload', element: <UploadFile /> },
+    //     { path: 'network', element: <NetworksPage /> },
+    //     // { path: 'blog', element: <BlogPage /> },
     //   ],
     // },
-    {
-      path: '*',
-      element: <Navigate to="/404" replace />,
-    },
+    // {
+    //   path: 'login',
+    //   element: isEmailExists ? <Navigate to="/dashboard" /> : <LoginPage />,
+    // },
+    // {
+    //   path: 'signup',
+    //   element: isEmailExists ? <Navigate to="/dashboard" /> : <SignupPage />,
+    // },
+    // {
+    //   path: 'forgot',
+    //   element: isEmailExists ? <Navigate to="/dashboard" /> : <ForgotPage />,
+    // },
+    // // {
+    // //   element: <SimpleLayout />,
+    // //   children: [
+    // //     { element: <Navigate to="/dashboard/app" />, index: true },
+    // //     { path: '404', element: <Page404 /> },
+    // //     { path: '*', element: <Navigate to="/404" /> },
+    // //   ],
+    // // },
+    // {
+    //   path: '*',
+    //   element: <Navigate to="/404" replace />,
+    // },
   ]);
 
   return routes;

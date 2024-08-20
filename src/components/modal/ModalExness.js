@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Button, FormGroup, FormLabel, Input, Typography, Grid, TextField } from '@mui/material';
 import Swal from 'sweetalert2';
-import Label from '../label';
 import { prod, dev } from "../../utils/env";
 
 const style = {
@@ -37,7 +36,7 @@ export default function ModalExness({ isOpen, onClose }) {
 
     const handleSubmit = () => {
         onClose();
-        if (exnessId === "" || server === "" || password === "" || name === "" || teleId === "") {
+        if (exnessId === "" || server === "" || password === "" || name === "" || refferal === "") {
             Swal.fire({
                 title: "Vui lòng nhập đủ các thông tin!",
                 icon: "error",
@@ -57,19 +56,17 @@ export default function ModalExness({ isOpen, onClose }) {
             "passview": passview,
             "date" : message,
             "rate": reason,
+            "teleId": email,
             "refferal": refferal,
-            "teleId": teleId,
             "type": 1
         });
 
-        console.log(data);
         const config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `${prod}/api/v1/secured/update-exnessLisa`,
+            url: `${prod}/api/v1/auth/update-exnessLisa`,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentAccessToken}`
             },
             "data": data
         };
@@ -84,7 +81,7 @@ export default function ModalExness({ isOpen, onClose }) {
                         position: 'center',
                         showConfirmButton: false
                     }).then(() => {
-                        // window.location.reload();
+                        window.location.reload();
                     });
                 } else if (response.data.status === 226) {
                     Swal.fire({
@@ -97,26 +94,6 @@ export default function ModalExness({ isOpen, onClose }) {
                 }
             })
             .catch((error) => {
-                // if (error.response.status === 403) {
-                //     Swal.fire({
-                //         title: "An error occured",
-                //         icon: "error",
-                //         timer: 3000,
-                //         position: 'center',
-                //         showConfirmButton: false
-                //     });
-                // } else {
-                //     Swal.fire({
-                //         title: "Session is ended, please login again !",
-                //         icon: "error",
-                //         timer: 3000,
-                //         position: 'center',
-                //         showConfirmButton: false
-                //     }).then(() => {
-                //         localStorage.clear();
-                //         navigate('/login', { replace: true });
-                //     });
-                // }
                 console.log(error);
             });
     };
@@ -162,15 +139,9 @@ export default function ModalExness({ isOpen, onClose }) {
                         <TextField onChange={(e) => { setRefferal(e.target.value) }}
                             name="refferal"
                             value={refferal}
-                            label="ID Exness Người giới thiệu, để trống nếu không có"
+                            label="Exness ID Người giới thiệu"
                             required
-                        />
-                        <TextField onChange={(e) => { setTeleId(e.target.value) }}
-                            name="teleid"
-                            value={teleId}
-                            label="ID Tele để thông báo cập nhật mới"
-                            required
-                        />
+                        /> 
                         <Button onClick={handleSubmit}>Thêm mới</Button>
                     </Grid>
                 </Box>
@@ -179,3 +150,4 @@ export default function ModalExness({ isOpen, onClose }) {
         </div>
     );
 }
+
